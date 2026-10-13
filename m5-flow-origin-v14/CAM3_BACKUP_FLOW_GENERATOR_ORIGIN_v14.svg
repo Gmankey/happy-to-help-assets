@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+<!-- v14: physically sourced backup-generator-only power flow.
+   Track A: generator x925 y530, vertical 925->467, bend, right to cabinet x1136.
+   Track B: generator x941 y530, vertical 941->471, bend, right to cabinet x1136.
+   Do not modify camera-shell imagery or dead main-generator conduit. -->
+<defs>
+  <radialGradient id="glow"><stop stop-color="#dffff7"/><stop offset=".20" stop-color="#6bffe0"/><stop offset=".46" stop-color="#16dfa8" stop-opacity=".72"/><stop offset="1" stop-color="#06b875" stop-opacity="0"/></radialGradient>
+</defs>
+<!-- Source terminals show the moving electricity comes from the physical backup generator. -->
+<circle cx="925" cy="530" r="10" fill="url(#glow)" opacity=".70"/>
+<circle cx="941" cy="530" r="10" fill="url(#glow)" opacity=".70"/>
+<g>
+ <circle cx="0" cy="0" r="12" fill="url(#glow)"/>
+ <circle cx="0" cy="0" r="3" fill="#a9ffe6"/>
+ <animateMotion dur="2.7s" repeatCount="indefinite" rotate="0" path="M 925,530 L 925,467 A 41,41 0 0 1 966,426 L 1136,426"/>
+</g>
+<g>
+ <circle cx="0" cy="0" r="12" fill="url(#glow)"/>
+ <circle cx="0" cy="0" r="3" fill="#a9ffe6"/>
+ <animateMotion dur="2.7s" repeatCount="indefinite" rotate="0" path="M 941,530 L 941,471 A 29,29 0 0 1 970,442 L 1136,442"/>
+</g>
+</svg>
