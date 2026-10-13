@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+<!-- Calibrated v15, native 1672x941; two fixed dark-channel centreline routes inside backup conduits only. -->
+<defs><radialGradient id="glow"><stop stop-color="#dffff7"/><stop offset=".20" stop-color="#6bffe0"/><stop offset=".46" stop-color="#16dfa8" stop-opacity=".72"/><stop offset="1" stop-color="#06b875" stop-opacity="0"/></radialGradient></defs>
+<circle cx="935.8" cy="529" r="10" fill="url(#glow)" opacity=".70"/>
+<circle cx="947.8" cy="529" r="10" fill="url(#glow)" opacity=".70"/>
+<g><circle r="12" fill="url(#glow)"/><circle r="3" fill="#a9ffe6"/><animateMotion dur="2.7s" repeatCount="indefinite" rotate="0" path="M 935.8,529 L 935.8,472 L 936,464 L 937,456 L 939,451 L 944,444 L 952,439 L 961,437 L 976,436.8 L 1136,436.8"/></g>
+<g><circle r="12" fill="url(#glow)"/><circle r="3" fill="#a9ffe6"/><animateMotion dur="2.7s" repeatCount="indefinite" rotate="0" path="M 947.8,529 L 947.8,475 L 948,465 L 949,462 L 952,455 L 957,451 L 963,449.5 L 975,449.2 L 1136,449.2"/></g>
+</svg>
