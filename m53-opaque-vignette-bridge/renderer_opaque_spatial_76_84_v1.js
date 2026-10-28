@@ -97,8 +97,8 @@ function m53SpatialWhite(canvas,l,cfg){
  const cw=canvas.width,ch=canvas.height;
  const [cx,cy,, ,lx,ly,w,h]=cfg;
  const rx=(w/2)*(1-t)+lx*t,ry=(h/2)*(1-t)+ly*t;
- const stopPosition=[0,...stop.map(v=>1-(1-v)*span)];
- const stopAlpha=[0,...W100.map((v,i)=>i>=6?1:v*.97)];
+ const stopPosition=[0,1-span,...stop.map(v=>1-(1-v)*span)];
+ const stopAlpha=[0,0,...W100.map((v,i)=>i>=6?1:v*.97)];
  const data=ctx.createImageData(cw,ch),pix=data.data;
  for(let y=0;y<ch;y++)for(let x=0;x<cw;x++){
   const xx=(x+.5)*w/cw,yy=(y+.5)*h/ch;
