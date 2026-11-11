@@ -55,11 +55,11 @@ const hthClientNormalizeAction=(input)=>{
 const hthM84Interpret=(raw,p)=>{
  const x=String(raw||'').toLowerCase().replace(/[’‘]/g,"'").replace(/\bda\b/g,'the').replace(/\bdat\b/g,'that').replace(/\bgit\b/g,'get').replace(/\bthang\b/g,'thing').replace(/\btrolly\b/g,'trolley').replace(/\bu\b/g,'you').replace(/\bcuz\b/g,'because').replace(/\s+/g,' ').trim();
  const quoted=/^["“'‘].*["”'’]$/.test(String(raw||'').trim());
- const hypothetical=/\b(?:what if|suppose|hypothetically|imagine|maybe there (?:is|was)|could there be|would there be)\b/.test(x);
- const queried=/^(?:is there|are there|can you see|do you see|where is|what is|what's|could there be)\b/.test(x);
- const deniesCart=/\b(?:no (?:trolley|cart)|there (?:is|was) no (?:trolley|cart)|(?:can't|cannot|don't|do not) see (?:a |the )?(?:trolley|cart)|(?:trolley|cart) (?:is not|isn't|wasn't) (?:there|blocking)|not blocking)\b/.test(x);
+ const hypothetical=/\b(?:what if|suppose|hypothetically|imagine|maybe there (?:is|was)|could there be|would there be|might be|could be)\b/.test(x)||/^if\b/.test(x);
+ const queried=/^(?:is there|are there|can you see|do you see|where is|what is|what's|could there be|what about|do you think|could you tell me)\b/.test(x);
+ const deniesCart=/\b(?:no (?:trolley|cart)|there (?:is|was) no (?:trolley|cart)|(?:can't|cannot|don't|do not) see (?:a |the )?(?:trolley|cart)|(?:trolley|cart) (?:is not|isn't|wasn't) (?:there|blocking)|there (?:isn't|is not|wasn't) (?:a |the )?(?:trolley|cart)|not blocking)\b/.test(x);
  const deniesPole=/\b(?:no pole|no stick|no rod|no bar|there is no (?:pole|stick|rod)|(?:don't|do not|never|stop|avoid) (?:get|grab|pick|find|search|use|move|take|look for) (?:the |that |a )?(?:pole|stick|rod|bar))\b/.test(x);
- const cart=/\b(?:trolley|cart|doorway obstruction)\b/.test(x);
+ const cart=/\b(?:trolley|cart|doorway obstruction)\b/.test(x)||(/\b(?:something|object|thing|anything)\b/.test(x)&&/\b(?:blocking|blocked|wedged|jammed|stuck|obstruction|obstructing)\b/.test(x));
  const obstructed=/\b(?:blocking|block(?:ed)?|stuck|wedged|jammed|obstruct(?:ing|ion)?|in the way|in front)\b/.test(x);
  const door=/\b(?:door|doorway|entrance|threshold|exit from lab|outside|gap)\b/.test(x);
  const seen=/\b(?:i (?:can )?see|i saw|there(?:'s| is)|that(?:'s| is)|i (?:just )?told you|look|on the camera|watch the camera)\b/.test(x);
