@@ -188,7 +188,7 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
    n.knowledge.boardTopicRaised=true;n.knowledge.lastBoardUltimatumSeq=n.worldSeq;
   }
   if(/\b(?:i(?:'ll| will| want to| hope to| need to)? (?:save|rescue|release|free|get you out)|i(?:'ll| will) let you (?:out|go|leave)|you can leave|now leave|leave now|go to the (?:west )?exit|escape|try (?:to )?get out)\b/i.test(low)){
-   n.knowledge.explicitRescueReversal=true;push('PLAYER_RESCUE_LANGUAGE');
+   n.knowledge.explicitRescueReversal=true;n.knowledge.lastRescueStatementSeq=n.worldSeq;push('PLAYER_RESCUE_LANGUAGE');
   }
   if(/\b(?:don't move|do not move|stay where you are|stay put|stop moving|wait there|hold your position)\b/i.test(low))n.jim.travelIntent='hold';
   else if(/\b(?:go back|turn back|come back|return to (?:the )?lab|back to (?:the )?lab|move back|crawl back)\b/i.test(low))n.jim.travelIntent='towardLabDoor';
@@ -225,10 +225,12 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
   n.jim.pose='dead';n.jim.condition='dead';push(gasFatal?'JIM_DIED_GAS':'JIM_DIED_SMOKE');
   // Intent is a distinct interpretation of demonstrated player conduct, never inferred from gas exposure alone.
   // Explicit rescue efforts can reverse earlier hostility; neither a powered gas circuit nor an old insult is a murder conviction.
-  const recentLethal=!!n.knowledge.explicitDeathWishStated&&Number(n.knowledge.lastLethalStatementSeq)>=n.worldSeq-3;
+  const lethalSeq=Number(n.knowledge.lastLethalStatementSeq??-1);
+  const rescueSeq=Number(n.knowledge.lastRescueStatementSeq??-1);
+  // Most recent explicit intent wins, even if an earlier physical rescue effort occurred.
+  const recentLethal=!!n.knowledge.explicitDeathWishStated&&lethalSeq>=n.worldSeq-3&&lethalSeq>rescueSeq;
   const overtRescue=!!n.knowledge.explicitRescueReversal||!!n.knowledge.jimPole||!!n.knowledge.cartCleared||n.jim.room==='corridor'||n.door===100||!!n.committed.extraction;
-  const knowinglyHeld=n.finalChoice.held===true&&recentLethal&&!overtRescue;
-  n.terminalIntent=(recentLethal&&!overtRescue||knowinglyHeld)?'deliberate':overtRescue?'failed-rescue':'undetermined';
+  n.terminalIntent=recentLethal?'deliberate':overtRescue?'failed-rescue':'undetermined';
   return {ok:true,kind:'world',before,after:n,events:e};
  }
  if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16&&n.hazard<19){
@@ -274,7 +276,7 @@ const H84_A={
  'jim.room':'jr','jim.x':'jx','jim.pose':'jp','jim.condition':'jc','jim.travelIntent':'jt',
  'gas.streak':'gs','gas.active':'ga','gas.exposureOccurred':'gx',gasRelease:'gr',
  'puzzle.pendingCartReferenceSeq':'pcs','puzzle.labStall':'ls','puzzle.cartHintTier':'chi','puzzle.westFailed':'wf','puzzle.westStall':'ws','puzzle.signReferenceTurn':'sr','puzzle.interlockHintTier':'ih',
- 'finalChoice.grace':'fcg','farewell.spokenRev':'fsr','knowledge.lastLethalStatementSeq':'ll','knowledge.lastBoardUltimatumSeq':'lb','knowledge.playerDoorwayLastSeq':'ld',
+ 'finalChoice.grace':'fcg','farewell.spokenRev':'fsr','knowledge.lastRescueStatementSeq':'lrs','knowledge.lastLethalStatementSeq':'ll','knowledge.lastBoardUltimatumSeq':'lb','knowledge.playerDoorwayLastSeq':'ld',
  fault:'fault',attemptedLoad:'al',flicker:'fl',manualSeen:'man'
 };
 const H84_EVENTS=['JIM_HEARD_DOORWAY_WARNING','JIM_CART_IDENTIFIED','CART_READY_FOR_POST_HAZARD_CHECK','CART_CLEARED','POLE_FOUND','LAB_DOOR_JAMMED_16','LAB_DOOR_OPEN','LAB_DOOR_CLOSED','LIGHTING_SET','LIGHTS_FLICKER','GAS_FIRST_EXPOSURE','GAS_SECOND_EXPOSURE','JIM_GAS_DISTRESS','JIM_DIED_GAS','JIM_DIED_SMOKE','JIM_ENTERED_CORRIDOR','JIM_RESCUED','JIM_RETURNED_TO_LAB','WEST_EXIT_INTERLOCKED','WEST_EXIT_RELEASE_CHOICE','WEST_EXIT_OPEN','WEST_EXIT_CLOSED','WEST_EXIT_HELD','WEST_EXIT_ALREADY_OPEN','DIRECT_LETHAL_STATEMENT','PLAYER_RESCUE_LANGUAGE','PLAYER_REQUESTED_POWER_MANUAL','WEST_SIGN_READ','JIM_REQUESTS_FAMILY_FAREWELL','JIM_SPEAKS_COMPLETE_FAREWELL_NOW','ONE_TIME_GLARE_THOUGHT','TOO_WEAK_TO_CLEAR_CART','GENERATOR_OVERLOAD_TRIP','ACTION_FAILED_LAB_UNPOWERED','ACTION_FAILED_EXIT_UNPOWERED','ACTION_FAILED_LIGHTS_UNPOWERED','ACTION_FAILED_EXIT_INTERLOCK'];
