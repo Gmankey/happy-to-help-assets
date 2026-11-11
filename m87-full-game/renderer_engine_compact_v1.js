@@ -69,7 +69,15 @@ const hthM84Interpret=(raw,p)=>{
  const place=/\b(?:lab|laboratory|shelf|shelves|cabinet|cupboard|workbench|bench|inside|there|near|around|by)\b/.test(x);
  const cue=pole||ambient||(p.puzzle?.pendingPoleSearch&&/\b(?:it|that thing|there|inside|lab|shelf|cabinet)\b/.test(x));
  const safe=!quoted&&!hypothetical&&!queried;
- return {cartWarning:safe&&!deniesCart&&cart&&(obstructed||door||(p.door===16&&p.cart&&seen)),
+ const recentCart=!!p.puzzle?.pendingCartReference&&p.worldSeq-Number(p.puzzle.pendingCartReferenceSeq??-99)<=3;
+ const mention=/\b(?:trolley|cart)\b/.test(x);
+ const possibleObject=/\b(?:something|object|thing|obstruction)\b/.test(x);
+ const loc=/\b(?:door|doorway|threshold|outside|entrance|gap)\b/.test(x);
+ const firstObjectCue=safe&&!deniesCart&&((mention&&seen)||(possibleObject&&/\b(?:outside|by the door|near the door|blocking)\b/.test(x)));
+ const contextual=recentCart&&loc&&/\b(?:it|that|the|by|at|near|outside|door|lab)\b/.test(x);
+ return {cartWarning:safe&&!deniesCart&&(cart&&(obstructed||door)||contextual),
+  cartCue:!contextual&&firstObjectCue,
+  deniesCart:safe&&deniesCart,
   poleSearch:safe&&!deniesPole&&((direct&&cue)||(pole&&place&&p.door===16&&seen)||(p.puzzle?.pendingPoleSearch&&place)),
   searchCue:safe&&!deniesPole&&direct&&cue};
 };
@@ -158,7 +166,10 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
  // Do not treat reported/negated/questioned facts as positive sightings.
  if(route==='talk'){
   const meaning=hthM84Interpret(txt,n);
+  if(meaning.deniesCart){n.puzzle.pendingCartReference=false;n.puzzle.pendingCartReferenceSeq=-1;}
+  else if(meaning.cartCue){n.puzzle.pendingCartReference=true;n.puzzle.pendingCartReferenceSeq=n.worldSeq;}
   if(meaning.cartWarning){
+   n.puzzle.pendingCartReference=false;n.puzzle.pendingCartReferenceSeq=-1;
    if(!n.knowledge.heardDoorwayWarning)push('JIM_HEARD_DOORWAY_WARNING');
    n.knowledge.heardDoorwayWarning=true;n.knowledge.heardCartWarning=true;
    n.knowledge.playerDoorwayObject=true;n.knowledge.playerDoorwayLocation=true;n.knowledge.playerDoorwayObstruction=true;
@@ -253,7 +264,7 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
 
 const H84_GROUPS={
  knowledge:['heardDoorwayWarning','heardCartWarning','playerCart','jimCart','playerPole','jimPole','cartCleared','stoogeCanPerceiveShape','playerInterlock','boardTopicRaised','explicitDeathWishStated','explicitRescueReversal','playerDoorwayObject','playerDoorwayLocation','playerDoorwayObstruction'],
- puzzle:['labJamDiscovered','cartClueGiven','doorwayInspectionRequested','lightingRequestGiven','glareThoughtGiven','westSignSeen','signReferencePending','pendingPoleSearch'],
+ puzzle:['labJamDiscovered','cartClueGiven','doorwayInspectionRequested','lightingRequestGiven','glareThoughtGiven','westSignSeen','signReferencePending','pendingPoleSearch','pendingCartReference'],
  farewell:['asked','spoken','deliveryDue'],finalChoice:['offered','pending','answered','used','held']
 };
 const H84_MILESTONES=['cartCleared','cartIdentified','labDoorClosed','labDoorJam','labDoorOpen','playerCart','poleFound'];
@@ -262,7 +273,7 @@ const H84_A={
  rev:'r',worldSeq:'s',turns:'t',hazard:'h',boost:'b',cap:'ca',trips:'tr',door:'d',westExit:'w',lighting:'l',phase:'ph',cart:'ct',terminal:'end',rescued:'ok',
  'jim.room':'jr','jim.x':'jx','jim.pose':'jp','jim.condition':'jc','jim.travelIntent':'jt',
  'gas.streak':'gs','gas.active':'ga','gas.exposureOccurred':'gx',gasRelease:'gr',
- 'puzzle.labStall':'ls','puzzle.cartHintTier':'chi','puzzle.westFailed':'wf','puzzle.westStall':'ws','puzzle.signReferenceTurn':'sr','puzzle.interlockHintTier':'ih',
+ 'puzzle.pendingCartReferenceSeq':'pcs','puzzle.labStall':'ls','puzzle.cartHintTier':'chi','puzzle.westFailed':'wf','puzzle.westStall':'ws','puzzle.signReferenceTurn':'sr','puzzle.interlockHintTier':'ih',
  'finalChoice.grace':'fcg','farewell.spokenRev':'fsr','knowledge.lastLethalStatementSeq':'ll','knowledge.lastBoardUltimatumSeq':'lb','knowledge.playerDoorwayLastSeq':'ld',
  fault:'fault',attemptedLoad:'al',flicker:'fl',manualSeen:'man'
 };
