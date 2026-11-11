@@ -266,13 +266,14 @@ const hthM84Mask=(obj,names)=>names.reduce((n,k,i)=>n+(obj?.[k]?(2**i):0),0).toS
 const hthM84Wire=(before,tr)=>{
  const after=tr.after,out=[];
  const walk=(old,value,key)=>{
+  if(['rev','boost','cap','trips'].includes(key))return; // mandatory header contains these exactly
   if(JSON.stringify(old)===JSON.stringify(value))return;
   if(key==='story'||key==='canon'||key==='seed')throw Error('Immutable canon changed');
   if(key==='pending'||key==='committed')return; // authoritative switch masks already carried in sw header
   if(key==='knownMilestones'){out.push('km'+value.map(x=>{const i=H84_MILESTONES.indexOf(x);if(i<0)throw Error('Unknown milestone '+x);return i.toString(36)}).join(''));return}
   if(H84_GROUPS[key]){
    const fields=H84_GROUPS[key];
-   if(hthM84Mask(old,fields)!==hthM84Mask(value,fields))out.push(({knowledge:'k',puzzle:'p',farewell:'f',finalChoice:'c'})[key]+hthM84Mask(value,fields));
+   if(hthM84Mask(old,fields)!==hthM84Mask(value,fields))out.push(({knowledge:'kb',puzzle:'p',farewell:'f',finalChoice:'c'})[key]+hthM84Mask(value,fields));
    for(const f of new Set([...Object.keys(old||{}),...Object.keys(value||{})]))if(!fields.includes(f))walk(old?.[f],value?.[f],key+'.'+f);
    return;
   }
