@@ -268,7 +268,7 @@ const hthM84Wire=(before,tr)=>{
  const walk=(old,value,key)=>{
   if(JSON.stringify(old)===JSON.stringify(value))return;
   if(key==='story'||key==='canon'||key==='seed')throw Error('Immutable canon changed');
-  if(key==='pending'||key==='committed'){out.push((key==='pending'?'sp':'sc')+hthM84Mask(value,H84_SWITCHES));return}
+  if(key==='pending'||key==='committed')return; // authoritative switch masks already carried in sw header
   if(key==='knownMilestones'){out.push('km'+value.map(x=>{const i=H84_MILESTONES.indexOf(x);if(i<0)throw Error('Unknown milestone '+x);return i.toString(36)}).join(''));return}
   if(H84_GROUPS[key]){
    const fields=H84_GROUPS[key];
