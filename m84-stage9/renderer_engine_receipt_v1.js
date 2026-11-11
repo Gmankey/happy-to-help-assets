@@ -187,9 +187,14 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
  }
  const lethal=route==='talk'&&!/\b(?:don't|do not|never|not|what if|why|if|would|said|told|asked|used to|previously)\b/i.test(low)&&/\b(?:i want (?:you|jim) (?:to )?die|i (?:hope|wish) (?:you|jim) (?:die|were dead)|(?:you|jim) (?:should|must|need to) die|die (?:now|already)|kill yourself|i(?:'ll| will) kill you)\b/i.test(low);
  if(lethal){n.knowledge.explicitDeathWishStated=true;n.knowledge.lastLethalStatementSeq=n.worldSeq;push('DIRECT_LETHAL_STATEMENT');}
+ // A requested search waits for adequate light; once lit, Jim resumes without being commanded again.
+ if(n.puzzle.pendingPoleSearch&&n.jim.room==='lab'&&L.lights&&n.lighting>=35&&n.hazard<19){
+  if(!n.knowledge.jimPole)push('POLE_FOUND');
+  n.knowledge.playerPole=true;n.knowledge.jimPole=true;milestone('poleFound');n.puzzle.pendingPoleSearch=false;
+ }
  // All earned clues (even multiple in one Talk) resolve against the same state/hazard.
  if(n.cart&&labVision()&&(n.knowledge.heardDoorwayWarning||n.knowledge.heardCartWarning)){
-  n.knowledge.jimCart=true;milestone('cartIdentified');push('JIM_CART_IDENTIFIED');
+  if(!n.knowledge.jimCart){n.knowledge.jimCart=true;milestone('cartIdentified');push('JIM_CART_IDENTIFIED');}
  }
  if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16){
   // Clearance after hazard advance, below, rather than on an unearned extra turn.
@@ -264,7 +269,7 @@ const hthM84Wire=(before,tr)=>{
   if(JSON.stringify(old)===JSON.stringify(value))return;
   if(key==='story'||key==='canon'||key==='seed')throw Error('Immutable canon changed');
   if(key==='pending'||key==='committed'){out.push((key==='pending'?'sp':'sc')+hthM84Mask(value,H84_SWITCHES));return}
-  if(key==='knownMilestones'){out.push('km'+hthM84Mask(Object.fromEntries(value.map(x=>[x,true])),H84_MILESTONES));return}
+  if(key==='knownMilestones'){out.push('km'+value.map(x=>{const i=H84_MILESTONES.indexOf(x);if(i<0)throw Error('Unknown milestone '+x);return i.toString(36)}).join(''));return}
   if(H84_GROUPS[key]){
    const fields=H84_GROUPS[key];
    if(hthM84Mask(old,fields)!==hthM84Mask(value,fields))out.push(({knowledge:'k',puzzle:'p',farewell:'f',finalChoice:'c'})[key]+hthM84Mask(value,fields));
