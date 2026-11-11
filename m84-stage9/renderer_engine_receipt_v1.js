@@ -282,7 +282,7 @@ const hthM84Wire=(before,tr)=>{
  };
  walk(before,after,'');
  const ev=tr.events.map(x=>{let k=H84_EVENTS.indexOf(x);if(k<0)throw Error('Unknown event: '+x);return k.toString(36)}).join('.');
- const line='H84:'+before.rev+'>'+after.rev+';'+out.join(';')+';e='+ev+';z='+(tr.kind==='zero-time'?1:0);
+ const line='H84:'+before.rev+'>'+after.rev+';sw='+hthM84Mask(after.pending,H84_SWITCHES)+'/'+hthM84Mask(after.committed,H84_SWITCHES)+';b='+Number(after.boost)+';ca='+after.cap+';tr='+after.trips+';'+out.join(';')+';e='+ev+';z='+(tr.kind==='zero-time'?1:0);
  if(line.length>320)throw Error('Protocol overhead exceeds 320 characters: '+line.length);
  return line;
 };
