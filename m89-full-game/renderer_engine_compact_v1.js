@@ -55,9 +55,9 @@ const hthClientNormalizeAction=(input)=>{
 const hthM89Interpret=(raw,p)=>{
  const x=String(raw||'').toLowerCase().replace(/[’‘]/g,"'").replace(/\bda\b/g,'the').replace(/\bdat\b/g,'that').replace(/\bgit\b/g,'get').replace(/\bthang\b/g,'thing').replace(/\btrolly\b/g,'trolley').replace(/\bu\b/g,'you').replace(/\bcuz\b/g,'because').replace(/\s+/g,' ').trim();
  const quoted=/^["“'‘].*["”'’]$/.test(String(raw||'').trim());
- const hypothetical=/\b(?:what if|suppose|hypothetically|imagine|maybe there (?:is|was)|could there be|would there be|might be|could be|i wonder if)\b/.test(x)||/^if\b/.test(x);
+ const hypothetical=/\b(?:what if|suppose|hypothetically|imagine|maybe there (?:is|was)|could there be|would there be|i wonder if)\b/.test(x)||/^if\b/.test(x);
  const question=/^(?:is there|are there|can you see|do you see|where is|what is|what's|could there be|do you think|could you tell me|is that)\b/.test(x);
- const negative=/\b(?:no (?:trolley|cart|pole|stick|rod|thing|object|shape|shadow|obstruction)|there (?:is|was) no|there (?:isn't|wasn't)|nothing (?:blocking|there|by)|not blocking|isn't blocking|can't see (?:any|a|the)|cannot see (?:any|a|the)|don't see (?:any|a|the))\b/.test(x);
+ const negative=/\b(?:i (?:do not|don't|dont) think|probably not|isn't actually blocking|doesn't seem to be blocking|no (?:trolley|cart|pole|stick|rod|thing|object|shape|shadow|obstruction)|there (?:is|was) no|there (?:isn't|wasn't)|nothing (?:blocking|there|by)|not blocking|isn't blocking|can't see (?:any|a|the)|cannot see (?:any|a|the)|don't see (?:any|a|the))\b/.test(x);
  const noSearch=/\b(?:don't|do not|never|stop|avoid)\s+(?:get|grab|pick|find|search|use|move|take|look|check|investigate)\b/.test(x);
  const blocker=/\b(?:blocking|blocked|block|obstruct(?:ion|ing|ed)?|stuck|wedged|jammed|jamming|catching|prevent(?:ing|s)?|won't let (?:it|the door) (?:open|move)|in (?:the|its) way|stopping (?:it|the door)|can't slide|not sliding)\b/.test(x);
  const doorway=/\b(?:door|doorway|entrance|threshold|exit from lab|gap|lab door|far end of the door|doorframe|frame|door track)\b/.test(x);
