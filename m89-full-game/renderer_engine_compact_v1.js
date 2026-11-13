@@ -573,11 +573,11 @@ function mountWithCSS(root){
     if(p.terminal==='dead'){root.querySelector('.tabs button')?.click();root.querySelectorAll('.tabs button').forEach(b=>b.disabled=true);root.querySelectorAll('#h7boostBtn, #h7breakers .hit').forEach(b=>b.style.pointerEvents='none');}
     const tag=document.createElement('div');tag.className='hthM83Terminal';tag.textContent='FINAL CCTV FRAME';tag.style.cssText='font:12px system-ui;color:#a9bdba;padding:8px 0';root.appendChild(tag);return true;
   }
-  if(p.finalChoice?.pending||p.finalChoice?.held){
-   // The two actual response buttons are adjacent native DIL controls beneath CCTV.
-   // Never render a second, competing "No" button inside this viewer.
+  if(p.finalChoice?.pending){
+   // The two final-response controls are adjacent native DIL buttons beneath the CCTV.
    return true;
   } else {
+   // After a zero-time Hold, ordinary Talk/ACTION remains available; Jim is still trapped.
    btn('Talk to Jim',()=>{input.placeholder='Say something to Jim…';updateDraft({mode:'talk',entry:input.value})});
    btn('ACTION',()=>{input.placeholder='e.g. open lab door';updateDraft({mode:'action',entry:input.value})});
    input.value=d.entry||'';
