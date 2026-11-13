@@ -72,7 +72,7 @@ const hthM89Interpret=(raw,p)=>{
  const location=/\b(?:lab|laboratory|shelf|shelves|cabinet|cupboard|workbench|bench|inside|there|near|around|by)\b/.test(x);
  const labSearch=/(?:what about|anything|something|search|look|check|find|investigate).{0,85}\b(?:lab|laboratory|room|bench|shelves|cabinet)\b|\b(?:lab|laboratory|room)\b.{0,75}\b(?:anything|something|use|useful|search|look|find)\b|\b(?:anything|something)\b.{0,35}\b(?:you can use|useful|to use)\b/.test(x);
  const poleSearch=!quoted&&!hypothetical&&!noSearch&&((pole&&(direct||seen&&location))||labSearch||(p.puzzle?.pendingPoleSearch&&location&&/\b(?:it|there|that|search|look|check)\b/.test(x)));
- return {obstruction,visualCue,negative, poleSearch};
+ return {obstruction,visualCue,negative,namedCart:/\b(?:trolley|cart)\b/.test(x),poleSearch};
 };
 const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
  const C={labCam:5,exitCam:5,lights:8,labDoor:45,exitDoor:45,extraction:35,inertGas:12};
@@ -163,10 +163,11 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
   if(meaning.obstruction){
    n.puzzle.pendingCartReference=false;n.puzzle.pendingCartReferenceSeq=-1;
    if(!n.knowledge.heardDoorwayWarning)push('JIM_HEARD_DOORWAY_WARNING');
-   n.knowledge.heardDoorwayWarning=true;n.knowledge.heardCartWarning=true;
+   n.knowledge.heardDoorwayWarning=true;
+   if(meaning.namedCart)n.knowledge.heardCartWarning=true;
    n.knowledge.playerDoorwayObject=true;n.knowledge.playerDoorwayLocation=true;n.knowledge.playerDoorwayObstruction=true;
    n.knowledge.playerDoorwayLastSeq=n.worldSeq;
-   if(camVision()&&!n.knowledge.playerCart){n.knowledge.playerCart=true;milestone('playerCart');}
+   if(meaning.namedCart&&camVision()&&!n.knowledge.playerCart){n.knowledge.playerCart=true;milestone('playerCart');}
   }
   // Jim uses his own eyes and accessible lab equipment once the player has located an obstruction.
   // No further keyword "trolley", "pole", or cabinet password is required.
