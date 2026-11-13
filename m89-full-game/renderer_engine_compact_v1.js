@@ -56,7 +56,7 @@ const hthM89Interpret=(raw,p)=>{
  const x=String(raw||'').toLowerCase().replace(/[’‘]/g,"'").replace(/\bda\b/g,'the').replace(/\bdat\b/g,'that').replace(/\bgit\b/g,'get').replace(/\bthang\b/g,'thing').replace(/\btrolly\b/g,'trolley').replace(/\bu\b/g,'you').replace(/\bcuz\b/g,'because').replace(/\s+/g,' ').trim();
  const quoted=/^["“'‘].*["”'’]$/.test(String(raw||'').trim());
  const hypothetical=/\b(?:what if|suppose|hypothetically|imagine|maybe there (?:is|was)|could there be|would there be|i wonder if)\b/.test(x)||/^if\b/.test(x);
- const question=/^(?:is there|are there|can you see|do you see|where is|what is|what's|could there be|do you think|could you tell me|is that)\b/.test(x);
+ const question=/^(?:is there|are there|can you see|do you see|where is|what is|what's|could there be|could that be|do you think|could you tell me|is that|why|how)\b/.test(x);
  const negative=/\b(?:i (?:do not|don't|dont) think|probably not|isn't actually blocking|doesn't seem to be blocking|no (?:trolley|cart|pole|stick|rod|thing|object|shape|shadow|obstruction)|there (?:is|was) no|there (?:isn't|wasn't)|nothing (?:blocking|there|by)|not blocking|isn't blocking|can't see (?:any|a|the)|cannot see (?:any|a|the)|don't see (?:any|a|the))\b/.test(x);
  const noSearch=/\b(?:don't|do not|never|stop|avoid)\s+(?:get|grab|pick|find|search|use|move|take|look|check|investigate)\b/.test(x);
  const blocker=/\b(?:blocking|blocked|block|obstruct(?:ion|ing|ed)?|stuck|wedged|jammed|jamming|catching|prevent(?:ing|s)?|won't let (?:it|the door) (?:open|move)|in (?:the|its) way|stopping (?:it|the door)|can't slide|not sliding)\b/.test(x);
@@ -65,8 +65,8 @@ const hthM89Interpret=(raw,p)=>{
  const seen=/\b(?:i (?:can )?see|i saw|i notice|i noticed|there(?:'s| is)|that(?:'s| is)|i (?:just )?told you|look|on (?:the )?camera|camera ?2|on the feed|i reckon|it looks|looks like)\b/.test(x);
  const recent=!!p.puzzle?.pendingCartReference&&Number(p.worldSeq)-Number(p.puzzle.pendingCartReferenceSeq??-99)<=4;
  const safe=!quoted&&!hypothetical&&!question&&!negative;
- const visualCue=safe&&object&&seen&&(/\b(?:near|behind|beside|against|in front of|at|by|next to|outside|far end)\b/.test(x)&&doorway||/\bcamera ?2\b/.test(x)&&doorway);
- const obstruction=safe&&object&&(blocker&&(doorway||recent)||recent&&/\b(?:yes|that's|it's|that is|it is|blocking|jammed|wedged)\b/.test(x));
+ const visualCue=safe&&seen&&doorway&&(/\b(?:near|behind|beside|against|in front of|at|by|next to|outside|far end|in the track|within the track)\b/.test(x)||/\bcamera ?2\b/.test(x));
+ const obstruction=safe&&(blocker&&(doorway||recent)||recent&&/\b(?:yes|that's|it's|that is|it is|blocking|jammed|wedged)\b/.test(x));
  const pole=/\b(?:pole|poll|stick|rod|metal bar|long bar|long thing|long object|long metal thing|metal thing|something long)\b/.test(x);
  const direct=/\b(?:get|grab|pick up|pick|take|use|find|search|look for|look around|check|fetch|push|shove|move|shift|reach for|retrieve|locate|go get)\b/.test(x);
  const location=/\b(?:lab|laboratory|shelf|shelves|cabinet|cupboard|workbench|bench|inside|there|near|around|by)\b/.test(x);
@@ -185,7 +185,7 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
   if(/\b(?:i(?:'ll| will| want to| hope to| need to)? (?:save|rescue|release|free|get you out)|i(?:'ll| will) let you (?:out|go|leave)|you can leave|now leave|leave now|go to the (?:west )?exit|escape|try (?:to )?get out)\b/i.test(low)){
    n.knowledge.explicitRescueReversal=true;n.knowledge.lastRescueStatementSeq=n.worldSeq;push('PLAYER_RESCUE_LANGUAGE');
   }
-  if(/\b(?:don't move|do not move|stay where you are|stay put|stop moving|wait there|hold your position)\b/i.test(low))n.jim.travelIntent='hold';
+  if(/\b(?:don't move|do not move|do not touch|don't touch|leave it alone|stay where you are|stay put|stop moving|wait there|hold your position)\b/i.test(low))n.jim.travelIntent='hold';
   else if(/\b(?:go back|turn back|come back|return to (?:the )?lab|back to (?:the )?lab|move back|crawl back)\b/i.test(low))n.jim.travelIntent='towardLabDoor';
   else if(/\b(?:go forward|head (?:to|for|towards?) (?:the )?(?:west )?exit|go to (?:the )?(?:west )?exit|keep going|continue (?:to )?(?:the )?(?:west )?exit|keep crawling|crawl to|move towards? (?:the )?exit|go out|leave (?:now|the building)|get out)\b/i.test(low))n.jim.travelIntent='towardWestExit';
   if(!n.manualSeen&&/\b(?:how much power|power instructions|operating instructions|instruction manual|manual|instructions|how do (?:i|we) (?:use|operate|work) (?:the |these )?(?:controls|console|switches|generator)|don't know how (?:to|this|it)|dont know how (?:to|this|it)|i (?:dont|don't|do not|can't|cannot) know how|what do i do here|how does (?:this|it|the console) work|can you (?:show|tell|explain) me how|need help (?:with|using|operating) (?:the |these )?(?:controls|switches|power)|i'm (?:lost|confused) with (?:the |these )?(?:controls|switches|power))\b/i.test(low)){n.manualSeen=true;push('PLAYER_REQUESTED_POWER_MANUAL');}
@@ -228,7 +228,7 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
   n.terminalIntent=recentLethal?'deliberate':overtRescue?'failed-rescue':'undetermined';
   return {ok:true,kind:'world',before,after:n,events:e};
  }
- if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16&&n.hazard<19){
+ if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16&&n.hazard<19&&n.jim.travelIntent!=='hold'){
   n.cart=false;n.knowledge.cartCleared=true;milestone('cartCleared');push('CART_CLEARED');
  }else if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.hazard>=19)push('TOO_WEAK_TO_CLEAR_CART');
  // Movement is a function of POST-turn condition; never teleport to the West Exit.
