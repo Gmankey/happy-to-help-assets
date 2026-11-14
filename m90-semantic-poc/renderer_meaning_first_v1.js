@@ -612,7 +612,7 @@ const hthM90CheckSpeech=(d,p)=>{
  if(!d||typeof d.jimSpeech!=='string'||typeof d.thought!=='string'||Object.keys(d).some(k=>!['jimSpeech','thought'].includes(k)))return {ok:false,error:'Invalid structured voice fields'};
  const j=d.jimSpeech.trim(),t=d.thought.trim();
  if(!j||!t)return {ok:false,error:'Empty voice fields'};
- if(/(?:^|[.!?]\s+|\n)\s*(?:he|jim|his|the camera|the door)\s+(?:pauses|coughs|looks|stares|leans|moves|turns|reaches|sits|falls|shifts|takes|steps|is)\b/i.test(j))return {ok:false,error:'Third-person narration'};
+ if(/(?:^|[.!?]\s+|\n)\s*(?:he|jim|his)\s+(?:pauses|coughs|looks|stares|leans|moves|turns|reaches|sits|falls|shifts|takes|steps)\b/i.test(j))return {ok:false,error:'Third-person narration'};
  if(/\*[^*\n]+\*|\[(?:pause|cough|silence)\]|\b(?:his voice|his breathing|Jim's voice|Jim's eyes|he said|he asked|she said)\b/i.test(j))return {ok:false,error:'Unspoken stage direction'};
  if(!/\b(?:I|me|my|mine)\b/i.test(t))return {ok:false,error:'Not first-person thought'};
  if(!p.knowledge.boardTopicRaised&&/\b(?:board meeting|decommission|shutdown recommendation)\b/i.test(j+' '+t))return {ok:false,error:'Unearned board'};
