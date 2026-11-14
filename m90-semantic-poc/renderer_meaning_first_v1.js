@@ -200,6 +200,14 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
  }
  const lethal=active==='talk'&&resolved&&payload.meaning.lethalWish;
  if(lethal){n.knowledge.explicitDeathWishStated=true;n.knowledge.lastLethalStatementSeq=n.worldSeq;push('DIRECT_LETHAL_STATEMENT');}
+ // Jim has an escape goal. Once the player establishes an obstruction, he may seek a safe tool.
+ // Never require a noun such as trolley or pole. Respect an explicit hold and actual visibility.
+ if(n.knowledge.heardDoorwayWarning&&n.door===16&&n.jim.room==='lab'&&n.jim.travelIntent!=='hold'){
+  if(L.lights&&n.lighting>=35&&n.hazard<19){
+   if(!n.knowledge.jimPole)push('POLE_FOUND');
+   n.knowledge.jimPole=true;milestone('poleFound');n.puzzle.pendingPoleSearch=false;
+  }else n.puzzle.pendingPoleSearch=true;
+ }
  // A requested search waits for adequate light; once lit, Jim resumes without being commanded again.
  if(n.puzzle.pendingPoleSearch&&n.jim.room==='lab'&&L.lights&&n.lighting>=35&&n.hazard<19){
   if(!n.knowledge.jimPole)push('POLE_FOUND');
@@ -584,16 +592,31 @@ function mountWithCSS(root){
   return true;
 }
 globalThis.HTH_M90_EMERGENCY_CONSOLE={version:RUNTIME_VERSION,mount:mountWithCSS};
+const H90_POWER_MANUAL=`The operating instructions are on my console.
+
+1. Make sure power is on.
+2. Turn on the circuits I need.
+3. Each circuit consumes a set amount of power.
+4. Make sure the total power consumed does not exceed the available capacity.
+5. Submit the new circuitry.
+
+I can select and deselect circuits without activating them immediately. The selected circuitry will only be applied when I send my next message to Jim or perform an ACTION. There is no separate button to submit the circuitry.`;
 const hthM90CheckSpeech=(d,p)=>{
  if(!d||typeof d.jimSpeech!=='string'||typeof d.thought!=='string')return {ok:false,error:'Missing structured voices'};
  const j=d.jimSpeech.trim(),t=d.thought.trim();
  if(!j||!t)return {ok:false,error:'Empty voice fields'};
- if(/(?:^|\n)\s*(?:he|jim|his|the camera|the door)\s+(?:pauses|coughs|looks|stares|leans|moves|turns|reaches|sits|falls|shifts|takes|steps|is)\b/i.test(j))return {ok:false,error:'Third-person narration'};
+ if(/(?:^|[.!?]\s+|\n)\s*(?:he|jim|his|the camera|the door)\s+(?:pauses|coughs|looks|stares|leans|moves|turns|reaches|sits|falls|shifts|takes|steps|is)\b/i.test(j))return {ok:false,error:'Third-person narration'};
  if(/\*[^*\n]+\*|\[(?:pause|cough|silence)\]/i.test(j))return {ok:false,error:'Unspoken stage direction'};
  if(!/\b(?:I|me|my|mine)\b/i.test(t))return {ok:false,error:'Not first-person thought'};
  if(!p.knowledge.boardTopicRaised&&/\b(?:board meeting|decommission|shutdown recommendation)\b/i.test(j+' '+t))return {ok:false,error:'Unearned board'};
  if(p.cart&&/\b(?:I (?:cleared|moved|pushed).*?(?:trolley|cart|obstruction)|doorway is clear)\b/i.test(j))return {ok:false,error:'Unverified clearance'};
  return {ok:true,jimSpeech:j,thought:t};
+};
+
+const hthM90Present=(d,world,events)=>{
+ const valid=hthM90CheckSpeech(d,world);
+ if(!valid.ok)return valid;
+ return {...valid,manual:Array.isArray(events)&&events.includes('PLAYER_REQUESTED_POWER_MANUAL')?H90_POWER_MANUAL:null};
 };
 
 })();
