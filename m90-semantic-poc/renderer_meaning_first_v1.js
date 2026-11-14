@@ -53,7 +53,7 @@ const hthClientNormalizeAction=(input)=>{
 
 
 const H90_OBS=['near_door','doorway_obstruction','tool_in_lab','retract_observation'];
-const H90_REQ=['power_manual','search_lab','clear_doorway','read_west_sign'];
+const H90_REQ=['power_manual','inspect_doorway','search_lab','clear_doorway','read_west_sign'];
 const H90_OPS=['set_lighting','flicker_lights','open_lab','close_lab','open_west','close_west'];
 const hthM90ValidateMeaning=d=>{
  if(!d||typeof d!=='object'||!['talk','action'].includes(d.mode)||typeof d.playerText!=='string'||d.playerText.length>5000)return null;
@@ -78,6 +78,7 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
  const C={labCam:5,exitCam:5,lights:8,labDoor:45,exitDoor:45,extraction:35,inertGas:12};
  const n=JSON.parse(JSON.stringify(prior));
  const e=[];
+ let clearAuthorized=false;
  const fail=(reason)=>({ok:false,error:reason});
  const txt=resolved?payload.playerText.trim():String(raw||'').trim();
  const action=active==='action'?(resolved?hthM90Facility(payload):normalizer(txt)):null;
@@ -186,6 +187,18 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
   else if(m.movement==='to_lab')n.jim.travelIntent='towardLabDoor';
   else if(m.movement==='to_exit'||m.movement==='resume')n.jim.travelIntent='towardWestExit';
   if(m.requests.includes('power_manual')&&!n.manualSeen){n.manualSeen=true;push('PLAYER_REQUESTED_POWER_MANUAL');}
+  // An observation or question does not grant Jim permission to search or move anything.
+  // Inspection is an earned separate action; no trolley-name requirement is imposed.
+  if(m.requests.includes('inspect_doorway')||m.requests.includes('clear_doorway')){
+    if(n.door===16&&n.jim.room==='lab'&&L.lights&&n.lighting>=65&&n.hazard<19){
+      if(n.cart&&n.knowledge.heardDoorwayWarning&&!n.knowledge.jimCart){
+        n.knowledge.jimCart=true;milestone('cartIdentified');push('JIM_CART_IDENTIFIED');
+      }
+    }else push('JIM_DOORWAY_VIEW_OBSCURED');
+  }
+  const hadPoleAtTurnStart=!!prior.knowledge.jimPole;
+  const explicitToolPointedOut=m.observations.some(o=>o.type==='tool_in_lab');
+  // A request to clear may authorize searching for a means; never imply it was found before inspection.
   if(m.requests.includes('search_lab')||m.requests.includes('clear_doorway')){
     if(n.jim.room==='lab'){
       if(L.lights&&n.lighting>=35&&n.hazard<19){
@@ -194,30 +207,24 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
       }else n.puzzle.pendingPoleSearch=true;
     }
   }
+  clearAuthorized=m.requests.includes('clear_doorway')&&
+    (hadPoleAtTurnStart||explicitToolPointedOut)&&m.movement!=='hold';
+  if(m.requests.includes('clear_doorway')&&!clearAuthorized&&n.knowledge.jimPole)
+    push('JIM_TOOL_READY_AWAITING_CLEARANCE');
   if(m.requests.includes('read_west_sign')&&n.jim.room==='corridor'&&n.jim.x>=0.74){
     n.puzzle.westSignSeen=true;n.knowledge.playerInterlock=true;push('WEST_SIGN_READ');
   }
  }
  const lethal=active==='talk'&&resolved&&payload.meaning.lethalWish;
  if(lethal){n.knowledge.explicitDeathWishStated=true;n.knowledge.lastLethalStatementSeq=n.worldSeq;push('DIRECT_LETHAL_STATEMENT');}
- // Jim has an escape goal. Once the player establishes an obstruction, he may seek a safe tool.
- // Never require a noun such as trolley or pole. Respect an explicit hold and actual visibility.
- if(n.knowledge.heardDoorwayWarning&&n.door===16&&n.jim.room==='lab'&&n.jim.travelIntent!=='hold'){
-  if(L.lights&&n.lighting>=35&&n.hazard<19){
-   if(!n.knowledge.jimPole)push('POLE_FOUND');
-   n.knowledge.jimPole=true;milestone('poleFound');n.puzzle.pendingPoleSearch=false;
-  }else n.puzzle.pendingPoleSearch=true;
- }
  // A requested search waits for adequate light; once lit, Jim resumes without being commanded again.
  if(n.puzzle.pendingPoleSearch&&n.jim.room==='lab'&&L.lights&&n.lighting>=35&&n.hazard<19){
   if(!n.knowledge.jimPole)push('POLE_FOUND');
   n.knowledge.jimPole=true;milestone('poleFound');n.puzzle.pendingPoleSearch=false;
  }
  // All earned clues (even multiple in one Talk) resolve against the same state/hazard.
- if(n.cart&&n.door===16&&n.jim.room==='lab'&&n.committed.lights&&n.lighting>=35&&(n.knowledge.heardDoorwayWarning||n.knowledge.heardCartWarning)){
-  if(!n.knowledge.jimCart){n.knowledge.jimCart=true;milestone('cartIdentified');push('JIM_CART_IDENTIFIED');}
- }
- if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16){
+ // Identification is now earned only by Jim's explicit inspection, not by a player mentioning a shadow.
+ if(clearAuthorized&&n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16){
   // Clearance after hazard advance, below, rather than on an unearned extra turn.
   push('CART_READY_FOR_POST_HAZARD_CHECK');
  }
@@ -243,9 +250,9 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
   n.terminalIntent=recentLethal?'deliberate':overtRescue?'failed-rescue':'undetermined';
   return {ok:true,kind:'world',before,after:n,events:e};
  }
- if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16&&n.hazard<19&&n.jim.travelIntent!=='hold'){
+ if(clearAuthorized&&n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16&&n.hazard<19&&n.jim.travelIntent!=='hold'){
   n.cart=false;n.knowledge.cartCleared=true;milestone('cartCleared');push('CART_CLEARED');
- }else if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.hazard>=19)push('TOO_WEAK_TO_CLEAR_CART');
+ }else if(clearAuthorized&&n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.hazard>=19)push('TOO_WEAK_TO_CLEAR_CART');
  // Movement is a function of POST-turn condition; never teleport to the West Exit.
  if(n.jim.room==='lab'&&n.door===100&&n.jim.travelIntent!=='hold'){
   n.jim.room='corridor';n.jim.x=0.49;n.jim.travelIntent='towardWestExit';push('JIM_ENTERED_CORRIDOR');
