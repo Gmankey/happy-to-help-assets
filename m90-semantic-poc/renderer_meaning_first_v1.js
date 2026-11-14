@@ -602,11 +602,11 @@ const H90_POWER_MANUAL=`The operating instructions are on my console.
 
 I can select and deselect circuits without activating them immediately. The selected circuitry will only be applied when I send my next message to Jim or perform an ACTION. There is no separate button to submit the circuitry.`;
 const hthM90CheckSpeech=(d,p)=>{
- if(!d||typeof d.jimSpeech!=='string'||typeof d.thought!=='string')return {ok:false,error:'Missing structured voices'};
+ if(!d||typeof d.jimSpeech!=='string'||typeof d.thought!=='string'||Object.keys(d).some(k=>!['jimSpeech','thought'].includes(k)))return {ok:false,error:'Invalid structured voice fields'};
  const j=d.jimSpeech.trim(),t=d.thought.trim();
  if(!j||!t)return {ok:false,error:'Empty voice fields'};
  if(/(?:^|[.!?]\s+|\n)\s*(?:he|jim|his|the camera|the door)\s+(?:pauses|coughs|looks|stares|leans|moves|turns|reaches|sits|falls|shifts|takes|steps|is)\b/i.test(j))return {ok:false,error:'Third-person narration'};
- if(/\*[^*\n]+\*|\[(?:pause|cough|silence)\]/i.test(j))return {ok:false,error:'Unspoken stage direction'};
+ if(/\*[^*\n]+\*|\[(?:pause|cough|silence)\]|\b(?:his voice|his breathing|Jim's voice|Jim's eyes|he said|he asked|she said)\b/i.test(j))return {ok:false,error:'Unspoken stage direction'};
  if(!/\b(?:I|me|my|mine)\b/i.test(t))return {ok:false,error:'Not first-person thought'};
  if(!p.knowledge.boardTopicRaised&&/\b(?:board meeting|decommission|shutdown recommendation)\b/i.test(j+' '+t))return {ok:false,error:'Unearned board'};
  if(p.cart&&/\b(?:I (?:cleared|moved|pushed).*?(?:trolley|cart|obstruction)|doorway is clear)\b/i.test(j))return {ok:false,error:'Unverified clearance'};
