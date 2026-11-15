@@ -1,6 +1,6 @@
 /* HAPPY TO HELP Enhanced M17: external pinned static visual renderer. No narrative or engine data hosted here. */
 (function(){'use strict';
-const RUNTIME_VERSION='HTH_M90_MEANING_FIRST_v5';
+const RUNTIME_VERSION='HTH_M90_MEANING_FIRST_v6';
 const CSS=".hth,.hth *{box-sizing:border-box}.hth{font:12px system-ui;color:#d8e7e5;background:#0d1416;border:1px solid #49615f;border-radius:8px;padding:9px;max-width:100%}.tabs{display:flex;gap:5px;flex-wrap:wrap}.tabs button{background:#121d20;border:1px solid #546c69;color:#d8e7e5;border-radius:4px;padding:7px 9px;cursor:pointer}.tabs button[aria-selected=true]{background:#37685e;color:white;border-color:#73b5a6}.view{display:none;margin-top:7px}.view.on{display:block}.scene{position:relative;width:100%;overflow:hidden;background:#060909}.cam1 .scene{aspect-ratio:2/1}.cam2 .scene{aspect-ratio:16/9}.cam3 .scene{aspect-ratio:1672/941}.scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.scene img.off{display:none}.scene img.jim{width:auto;right:auto;bottom:auto;transform:translateX(-50%);object-fit:contain;pointer-events:none}.cam1 img.jim{height:28%;top:45%;left:71%}.cam2 img.jim{height:38%;top:44%;left:24%}.scene svg.over,.scene svg.light,.scene .atmo,.scene canvas.noise{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.scene svg.over{z-index:2}.cam3 img.overlay{z-index:3;pointer-events:none}.scene svg.smoke{z-index:4}.scene svg.light{z-index:8}.scene .atmo{z-index:9;opacity:0}.scene canvas.noise{z-index:10;opacity:0;animation:grain .23s steps(4,end) infinite}.noSignal{position:absolute;inset:0;z-index:15;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#05090a;color:#e9f6f4;font:700 clamp(14px,3vw,35px) ui-monospace,monospace;letter-spacing:.16em}.noSignal.on{display:flex}.noSignal span{font:11px ui-monospace;color:#729188;letter-spacing:.08em}.atmo span{position:absolute;display:block;border-radius:50%;width:32%;height:60%;background:radial-gradient(ellipse,rgba(196,210,211,.66),rgba(144,169,170,.40) 40%,transparent 74%);filter:blur(7px);animation:cloud 11s ease-in-out infinite}.atmo span:nth-child(1){left:12%;top:42%;animation-delay:-4s}.atmo span:nth-child(2){left:39%;top:26%;animation-delay:-8s;animation-duration:14s}.atmo span:nth-child(3){left:70%;top:48%;animation-delay:-2s;animation-duration:13s}.hit{pointer-events:all;cursor:pointer}.hit:focus-visible{stroke:#ffd871;stroke-width:2}.mainflash{animation:blink 1.2s steps(2,end) infinite}.smokepuff{opacity:0;transform-box:fill-box;transform-origin:center;animation:puff 6.8s ease-out infinite}.smokepuff.b{animation-delay:-2.2s;animation-duration:7.7s}.smokepuff.c{animation-delay:-4.5s;animation-duration:7.2s}.scene img.jim.wave{animation:wave 1.6s ease-in-out infinite}.scene img.jim.jump{animation:jump 1.5s ease-out infinite}@keyframes grain{0%{transform:translate(0)}25%{transform:translate(-1.5%,0)}50%{transform:translate(1%,-.5%)}75%{transform:translate(-.6%,1%)}}@keyframes cloud{0%{transform:translate(-10%,35%) scale(.72);opacity:0}28%{opacity:.8}65%{opacity:.72}100%{transform:translate(12%,-48%) scale(1.6);opacity:0}}@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}@keyframes puff{0%{opacity:0;transform:translate(2px,16px) scale(.65)}24%{opacity:.6}55%{opacity:.43}100%{opacity:0;transform:translate(20px,-235px) scale(2.25)}}@keyframes wave{50%{transform:translateX(-50%) rotate(-7deg)}}@keyframes jump{0%,100%{transform:translateX(-50%) translateY(0)}45%{transform:translateX(-50%) translateY(calc(-1 * var(--hth-jump-rise,12%)))}}\n.cam3 .cam3v7overlay{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}.cam3 .cam3v7smoke{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}\n\n/* M16 approved-reference poses and atmospheric fidelity */\n.cam1 img.jim,.cam2 img.jim{transform-origin:center bottom}\n.scene img.jim.cough{animation:coughShake 1.55s ease-in-out infinite}\n@keyframes coughShake{0%,30%,70%,100%{transform:translateX(-50%) rotate(0)}44%{transform:translateX(-50%) rotate(6deg) scaleY(.94)}54%{transform:translateX(-50%) rotate(-5deg) scaleY(.95)}}\n.cam3 .cam3v7smoke{z-index:7!important;pointer-events:none}\n.scene .atmo{display:none!important}.scene canvas.noise{mix-blend-mode:normal;image-rendering:auto}\n.scene .scanlines{position:absolute;inset:0;pointer-events:none;z-index:11;opacity:0;background:repeating-linear-gradient(0deg,rgba(218,226,224,.14) 0,rgba(218,226,224,.14) 1px,transparent 1px,transparent 5px);animation:scanRoll 4.8s linear infinite}\n@keyframes scanRoll{to{background-position:0 71px}}\n\n/* M17 native-visible controls and non-illuminating atmospheric layers */\n.hth,.hth *,.hth svg,.hth button{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none;touch-action:manipulation}\n.hth .scene canvas.fog{position:absolute;inset:0;width:100%;height:100%;z-index:9;opacity:0;pointer-events:none;mix-blend-mode:normal;filter:blur(5px)}\n.hth .scene canvas.noise{z-index:10;pointer-events:none;mix-blend-mode:normal!important;image-rendering:auto!important}\n.hth .scene .scanlines{z-index:11;mix-blend-mode:normal}\n.hth .scene .light-pulse{position:absolute;inset:0;background:#03080b;z-index:12;opacity:0;pointer-events:none}\n";
 const intWord={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10}
 
@@ -89,7 +89,7 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
  const load=keys.reduce((v,k)=>v+(switches[k]?C[k]:0),0);
  if(load!==selection.selectedLoad||typeof selection.generatorBoosted!=='boolean')return fail('Breaker load did not match selection.');
  if(n.finalChoice?.pending&&!['choice','choice-confirm'].includes(route))return fail('Resolve the final release choice first.');
- if(route==='choice-confirm'&&!((n.finalChoice.pending||n.finalChoice.held)&&/^confirm release jim$/i.test(txt)))return fail('Release confirmation unavailable.');
+ if(route==='choice-confirm'&&!((n.finalChoice.pending||n.finalChoice.held)&&n.door===0&&n.committed.exitDoor&&/^confirm release jim$/i.test(txt)))return fail('Release confirmation unavailable.');
  if(route==='choice'&&!(n.finalChoice.pending&&/^(?:keep (?:the )?west exit closed|keep closed|hold jim)$/i.test(txt)))return fail('Final choice unavailable.');
  if(!['talk','action','choice','choice-confirm'].includes(active))return fail('Unrecognised route.');
  const before={rev:n.rev,hazard:n.hazard,gasStreak:n.gas.streak};
@@ -163,8 +163,8 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
    if(o.type==='retract_observation'){
     if(!n.knowledge.heardDoorwayWarning){n.puzzle.pendingCartReference=false;n.puzzle.pendingCartReferenceSeq=-1;}
    }
-   if(o.type==='near_door'&&!n.knowledge.heardDoorwayWarning){n.puzzle.pendingCartReference=true;n.puzzle.pendingCartReferenceSeq=n.worldSeq;}
-   if(o.type==='doorway_obstruction'){
+   if(o.type==='near_door'&&o.certainty==='observed'&&!n.knowledge.heardDoorwayWarning){n.puzzle.pendingCartReference=true;n.puzzle.pendingCartReferenceSeq=n.worldSeq;}
+   if(o.type==='doorway_obstruction'&&o.certainty==='observed'){
     n.puzzle.pendingCartReference=false;n.puzzle.pendingCartReferenceSeq=-1;
     if(!n.knowledge.heardDoorwayWarning)push('JIM_HEARD_DOORWAY_WARNING');
     n.knowledge.heardDoorwayWarning=true;
@@ -172,7 +172,7 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
     n.knowledge.playerDoorwayLastSeq=n.worldSeq;
     if(o.identity==='trolley'){n.knowledge.heardCartWarning=true;if(camVision()&&!n.knowledge.playerCart){n.knowledge.playerCart=true;milestone('playerCart');}}
    }
-   if(o.type==='tool_in_lab'){
+   if(o.type==='tool_in_lab'&&o.certainty==='observed'){
     n.knowledge.playerPole=true;
     if(n.jim.room==='lab'&&L.lights&&n.lighting>=35&&n.hazard<19){
       if(!n.knowledge.jimPole)push('POLE_FOUND');
@@ -189,7 +189,7 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
   // An observation or question does not grant Jim permission to search or move anything.
   // Inspection is an earned separate action; no trolley-name requirement is imposed.
   if(m.requests.includes('inspect_doorway')||m.requests.includes('clear_doorway')){
-    if(n.door===16&&n.jim.room==='lab'&&L.lights&&n.lighting>=65&&n.hazard<19){
+    if(n.door===16&&n.jim.room==='lab'&&L.lights&&n.lighting>=65&&n.lighting<=85){
       if(n.cart&&n.knowledge.heardDoorwayWarning&&!n.knowledge.jimCart){
         n.knowledge.jimCart=true;milestone('cartIdentified');push('JIM_CART_IDENTIFIED');
       }
@@ -197,7 +197,7 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
   }
   // Player-led searching is the only way Jim earns a tool, but once the
   // tool and obstruction are known he must exercise his own initiative.
-  if(m.requests.includes('search_lab')||m.requests.includes('clear_doorway')){
+  if(m.requests.includes('search_lab')){
     if(n.jim.room==='lab'){
       if(L.lights&&n.lighting>=35&&n.hazard<19){
         if(!n.knowledge.jimPole)push('POLE_FOUND');
@@ -216,8 +216,13 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
   if(!n.knowledge.jimPole)push('POLE_FOUND');
   n.knowledge.jimPole=true;milestone('poleFound');n.puzzle.pendingPoleSearch=false;
  }
- // All earned clues (even multiple in one Talk) resolve against the same state/hazard.
- // Identification is now earned only by Jim's explicit inspection, not by a player mentioning a shadow.
+ // Jim inspects through the earned 16% gap without another instruction.
+ // Hearing a concrete doorway report and actually seeing through a lit gap
+ // are separate facts. Glare suspends inspection, but never deletes the report.
+ if(n.cart&&n.knowledge.heardDoorwayWarning&&!n.knowledge.jimCart&&labVision()){
+  n.knowledge.jimCart=true;milestone('cartIdentified');push('JIM_CART_IDENTIFIED');
+ }
+ // Once both facts are earned, clearance is independent of player permission.
  if(n.cart&&n.knowledge.jimCart&&n.knowledge.jimPole&&n.door===16&&n.jim.travelIntent!=='hold'){
   // Clearance after hazard advance, below, rather than on an unearned extra turn.
   push('CART_READY_FOR_POST_HAZARD_CHECK');
@@ -270,7 +275,7 @@ const hthM90Step=function hthM90Step(prior, selection, route, raw, normalizer) {
   if(e.some(x=>['LAB_DOOR_JAMMED_16','POLE_FOUND','JIM_CART_IDENTIFIED'].includes(x)))n.puzzle.labStall=0;
   else n.puzzle.labStall++;
  }
- if(L.labCam&&L.exitCam&&L.lights&&n.lighting>75&&!n.puzzle.glareThoughtGiven){n.puzzle.glareThoughtGiven=true;push('ONE_TIME_GLARE_THOUGHT');}
+ if(L.labCam&&L.exitCam&&L.lights&&n.lighting>85&&!n.puzzle.glareThoughtGiven){n.puzzle.glareThoughtGiven=true;push('ONE_TIME_GLARE_THOUGHT');}
  return {ok:true,kind:'world',before,after:n,events:e};
 }
 
@@ -610,6 +615,12 @@ const hthM90CheckSpeech=(d,p)=>{
  if(/\*[^*\n]+\*|\[(?:pause|cough|silence)\]|\b(?:his voice|his breathing|Jim's voice|Jim's eyes|he said|he asked|she said)\b/i.test(j))return {ok:false,error:'Unspoken stage direction'};
  if(!/\b(?:I|me|my|mine)\b/i.test(t))return {ok:false,error:'Not first-person thought'};
  if(!p.knowledge.boardTopicRaised&&/\b(?:board meeting|decommission|shutdown recommendation)\b/i.test(j+' '+t))return {ok:false,error:'Unearned board'};
+ // Jim's breathlessness and actual final words must match the physical turn.
+ const count=j.match(/\S+/g)?.length||0,h=Number(p.hazard||0);
+ const farewell=p.farewell?.spoken&&p.farewell?.spokenRev===p.rev;
+ const max=h>=19?38:h>=16?48:h>=12?65:Infinity;
+ if(!farewell&&count>max)return {ok:false,error:'Jim spoken length inconsistent with physical condition'};
+ if(p.terminal==='dead'&&(count<4||count>18))return {ok:false,error:'Invalid final audible fragment'};
  if(p.cart&&/\b(?:I (?:cleared|moved|pushed).*?(?:trolley|cart|obstruction)|doorway is clear)\b/i.test(j))return {ok:false,error:'Unverified clearance'};
  // The West Exit's actual safety mechanism is hidden until the player
  // earns the plaque reading. A failed operation is NOT a clue or error label.
@@ -622,6 +633,9 @@ const hthM90CheckSpeech=(d,p)=>{
 const hthM90Present=(d,world,events)=>{
  const valid=hthM90CheckSpeech(d,world);
  if(!valid.ok)return valid;
+ if(Array.isArray(events)&&events.includes('JIM_SPEAKS_COMPLETE_FAREWELL_NOW')&&
+    !['Michelle','Sammy','Timmy'].every(name=>new RegExp('\\b'+name+'\\b','i').test(d.jimSpeech)))
+  return {ok:false,error:'Incomplete earned family farewell'};
  // Event codes are private reducer diagnostics, not player-facing explanations.
  // In particular WEST_EXIT_INTERLOCKED must never become an error banner.
  return {...valid,publicNotice:null,manual:Array.isArray(events)&&events.includes('PLAYER_REQUESTED_POWER_MANUAL')?H90_POWER_MANUAL:null};
