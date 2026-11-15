@@ -15,11 +15,11 @@
 
 ## Canonical DIL response — fill only three placeholders
 
-Replace __FULL_PANEL_JSON__ with exactly the complete previous panel plus latest deterministic transition. Replace __JIM_SPOKEN__ with validated, audible Jim speech and __AI_PRIVATE_THOUGHT__ with a validated single first-person thought. Both are JavaScript string literals escaped correctly. Do not insert visible metadata.
+Replace __FULL_PANEL_JSON__ with exactly the complete previous panel plus latest deterministic transition. Replace __JIM_SPOKEN__ with validated, audible Jim speech and __AI_PRIVATE_THOUGHT__ with a validated single first-person thought. Both are JavaScript string literals escaped correctly. The fatal-turn exception also fills __JIM_FINAL_WORDS__. Do not insert visible metadata.
 
 ~~~dil
 {@body const [ui,setUi]=DIL.useState({panel:__FULL_PANEL_JSON__,draft:{mode:"talk",entry:"",payload:"",error:""}})}
-{@body const hthDraft={jim:__JIM_SPOKEN__,stooge:__AI_PRIVATE_THOUGHT__}}
+{@body const hthDraft={jim:__JIM_SPOKEN__,stooge:__AI_PRIVATE_THOUGHT__,lastWords:__JIM_FINAL_WORDS__}}
 {@body const hthM90ChoicePacket=(p,choice)=>{
  const costs={labCam:5,exitCam:5,lights:8,labDoor:45,exitDoor:45,extraction:35,inertGas:12};
  const load=Object.entries(costs).reduce((sum,[key,cost])=>sum+(p.pending?.[key]?cost:0),0);
@@ -29,6 +29,9 @@ Replace __FULL_PANEL_JSON__ with exactly the complete previous panel plus latest
 **JIM:** {hthDraft.jim}
 
 <text strong>{ui.panel.story?.AI_NAME || "AI"} // THOUGHT PROCESS</text> {hthDraft.stooge}
+{/if}
+{#if ui.panel.terminal==='dead'}
+**JIM:** {hthDraft.lastWords}
 {/if}
 {#if !ui.panel.terminal || ui.panel.terminal==='dead'}
 <AppBlock title="HAPPY TO HELP — CCTV" bind={{value:ui,setValue:setUi}}>
@@ -79,6 +82,10 @@ Replace __FULL_PANEL_JSON__ with exactly the complete previous panel plus latest
 </row>
 {/if}
 ~~~
+
+## Terminal story envelope (developer only)
+
+The frozen CCTV and Jim's final fragment appear on the **fatal world turn** before SYSTEM // CONNECTION LOST. Then one AI first-person thought, then the original no-active-user / shutdown-required ritual, and stop. That beats the ordinary living response template; do not let ordinary Jim speech or Talk/ACTION buttons reappear after death. Survivor release instead follows the original no-active-user shutdown, later Jim-only decommission conversation, override/countdown and quiet end. Neither terminal route may show a test report, credit, hazard strip or ending category. Both paths use the full M89 integrated storytelling contract, which is separate from this Stage 9 control template.
 
 ## Transport handling (developer only)
 
