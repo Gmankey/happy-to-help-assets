@@ -1,7 +1,7 @@
-# HAPPY TO HELP — M90 v7 NATIVE PLAYER RESPONSE CONTRACT
-<!-- HTH_M90_V7_PLAYER_RESPONSE_TEMPLATE_OK -->
+# HAPPY TO HELP — M90 v8 NATIVE PLAYER RESPONSE CONTRACT
+<!-- HTH_M90_V8_PLAYER_RESPONSE_TEMPLATE_OK -->
 
-**Purpose:** This is a developer-only output template for Stage 9. It is not itself a game turn. Preserve complete actual panel values when filling __FULL_PANEL_JSON__, never an invented state. The approved CCTV renderer is sourced only from pinned GitHub commit 0e63a29d06bf474eb1dc554cea0d9bed44414e26. This Stage 9 prototype is not the full ten-stage integrated master.
+**Purpose:** This is a developer-only output template for Stage 9. It is not itself a game turn. Preserve complete actual panel values when filling __FULL_PANEL_JSON__, never an invented state. The approved CCTV renderer is sourced only from pinned GitHub commit 2b5ed8e7f3a55d10279e1f6c423642f7a1a3fe70. This Stage 9 prototype is not the full ten-stage integrated master.
 
 ## Hard rules — no exceptions
 
@@ -38,8 +38,8 @@ Replace __FULL_PANEL_JSON__ with exactly the complete previous panel plus latest
 <div class="hth" data-hth-m83-root data-hth-boot="pending" style="background:#0d1416;color:#d8e7e5;border:1px solid #49615f;padding:10px;border-radius:8px;font:12px system-ui">Emergency CCTV loading…</div>
 <script>
 (()=>{const r=document.currentScript?.previousElementSibling;if(!r)return;
- const ver='HTH_M90_MEANING_FIRST_v7';
- const urls=['https://cdn.jsdelivr.net/gh/Gmankey/happy-to-help-assets@0e63a29d06bf474eb1dc554cea0d9bed44414e26/m90-semantic-poc/renderer_meaning_first_v1.js','https://raw.githubusercontent.com/Gmankey/happy-to-help-assets/0e63a29d06bf474eb1dc554cea0d9bed44414e26/m90-semantic-poc/renderer_meaning_first_v1.js'];
+ const ver='HTH_M90_MEANING_FIRST_v8';
+ const urls=['https://cdn.jsdelivr.net/gh/Gmankey/happy-to-help-assets@2b5ed8e7f3a55d10279e1f6c423642f7a1a3fe70/m90-semantic-poc/renderer_meaning_first_v1.js','https://raw.githubusercontent.com/Gmankey/happy-to-help-assets/2b5ed8e7f3a55d10279e1f6c423642f7a1a3fe70/m90-semantic-poc/renderer_meaning_first_v1.js'];
  const mark=s=>r.dataset.hthBoot=s;
  function fail(reason){mark(reason);r.textContent='CCTV LOAD ERROR — '+reason+'. No game turn consumed.';const b=document.createElement('button');b.textContent='Retry CCTV';b.onclick=()=>{delete r.dataset.hthM18Ready;delete r.dataset.ready;load(0)};r.appendChild(b)}
  function mount(){try{
@@ -89,7 +89,7 @@ The frozen CCTV and Jim's final fragment appear on the **fatal world turn** befo
 
 ## Transport handling (developer only)
 
-Upon a user message starting H90_CHOICE:, load the last accepted full state; fetch/use the pinned M90 v7 reducer. Call hthM90ApplyChoicePacket(lastPanel, verbatimUserMessage). The helper checks revision, payload, circuit values/load, physically powered West Exit, Lab Door closure, pending/held choice, and no extra world time/hazard. If rejected, leave the full state unchanged and do not produce a fiction turn or spoil the reason. If successful, display exactly one response using the new full panel. Normal H90_INPUT continues using semantic interpretation + hthM90Step, never a client keyword parser. The original M89 full game still uses H84; this template does **not** silently change it.
+Upon a user message starting H90_CHOICE:, load the last accepted full state; fetch/use the pinned M90 v8 reducer. Call hthM90ApplyChoicePacket(lastPanel, verbatimUserMessage). The helper checks revision, payload, circuit values/load, physically powered West Exit, Lab Door closure, pending/held choice, and no extra world time/hazard. If rejected, leave the full state unchanged and do not produce a fiction turn or spoil the reason. If successful, display exactly one response using the new full panel. Normal H90_INPUT continues using semantic interpretation + hthM90Step, never a client keyword parser. The original M89 full game still uses H84; this template does **not** silently change it.
 
 ## Preflight static rejection checks
 
