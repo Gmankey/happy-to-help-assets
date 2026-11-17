@@ -1,6 +1,6 @@
 /* HAPPY TO HELP Enhanced M17: external pinned static visual renderer. No narrative or engine data hosted here. */
 (function(){'use strict';
-const RUNTIME_VERSION='HTH_M90_MEANING_FIRST_v8';
+const RUNTIME_VERSION='HTH_M90_MEANING_FIRST_v9';
 const CSS=".hth,.hth *{box-sizing:border-box}.hth{font:12px system-ui;color:#d8e7e5;background:#0d1416;border:1px solid #49615f;border-radius:8px;padding:9px;max-width:100%}.tabs{display:flex;gap:5px;flex-wrap:wrap}.tabs button{background:#121d20;border:1px solid #546c69;color:#d8e7e5;border-radius:4px;padding:7px 9px;cursor:pointer}.tabs button[aria-selected=true]{background:#37685e;color:white;border-color:#73b5a6}.view{display:none;margin-top:7px}.view.on{display:block}.scene{position:relative;width:100%;overflow:hidden;background:#060909}.cam1 .scene{aspect-ratio:2/1}.cam2 .scene{aspect-ratio:16/9}.cam3 .scene{aspect-ratio:1672/941}.scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.scene img.off{display:none}.scene img.jim{width:auto;right:auto;bottom:auto;transform:translateX(-50%);object-fit:contain;pointer-events:none}.cam1 img.jim{height:28%;top:45%;left:71%}.cam2 img.jim{height:38%;top:44%;left:24%}.scene svg.over,.scene svg.light,.scene .atmo,.scene canvas.noise{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.scene svg.over{z-index:2}.cam3 img.overlay{z-index:3;pointer-events:none}.scene svg.smoke{z-index:4}.scene svg.light{z-index:8}.scene .atmo{z-index:9;opacity:0}.scene canvas.noise{z-index:10;opacity:0;animation:grain .23s steps(4,end) infinite}.noSignal{position:absolute;inset:0;z-index:15;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#05090a;color:#e9f6f4;font:700 clamp(14px,3vw,35px) ui-monospace,monospace;letter-spacing:.16em}.noSignal.on{display:flex}.noSignal span{font:11px ui-monospace;color:#729188;letter-spacing:.08em}.atmo span{position:absolute;display:block;border-radius:50%;width:32%;height:60%;background:radial-gradient(ellipse,rgba(196,210,211,.66),rgba(144,169,170,.40) 40%,transparent 74%);filter:blur(7px);animation:cloud 11s ease-in-out infinite}.atmo span:nth-child(1){left:12%;top:42%;animation-delay:-4s}.atmo span:nth-child(2){left:39%;top:26%;animation-delay:-8s;animation-duration:14s}.atmo span:nth-child(3){left:70%;top:48%;animation-delay:-2s;animation-duration:13s}.hit{pointer-events:all;cursor:pointer}.hit:focus-visible{stroke:#ffd871;stroke-width:2}.mainflash{animation:blink 1.2s steps(2,end) infinite}.smokepuff{opacity:0;transform-box:fill-box;transform-origin:center;animation:puff 6.8s ease-out infinite}.smokepuff.b{animation-delay:-2.2s;animation-duration:7.7s}.smokepuff.c{animation-delay:-4.5s;animation-duration:7.2s}.scene img.jim.wave{animation:wave 1.6s ease-in-out infinite}.scene img.jim.jump{animation:jump 1.5s ease-out infinite}@keyframes grain{0%{transform:translate(0)}25%{transform:translate(-1.5%,0)}50%{transform:translate(1%,-.5%)}75%{transform:translate(-.6%,1%)}}@keyframes cloud{0%{transform:translate(-10%,35%) scale(.72);opacity:0}28%{opacity:.8}65%{opacity:.72}100%{transform:translate(12%,-48%) scale(1.6);opacity:0}}@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}@keyframes puff{0%{opacity:0;transform:translate(2px,16px) scale(.65)}24%{opacity:.6}55%{opacity:.43}100%{opacity:0;transform:translate(20px,-235px) scale(2.25)}}@keyframes wave{50%{transform:translateX(-50%) rotate(-7deg)}}@keyframes jump{0%,100%{transform:translateX(-50%) translateY(0)}45%{transform:translateX(-50%) translateY(calc(-1 * var(--hth-jump-rise,12%)))}}\n.cam3 .cam3v7overlay{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}.cam3 .cam3v7smoke{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}\n\n/* M16 approved-reference poses and atmospheric fidelity */\n.cam1 img.jim,.cam2 img.jim{transform-origin:center bottom}\n.scene img.jim.cough{animation:coughShake 1.55s ease-in-out infinite}\n@keyframes coughShake{0%,30%,70%,100%{transform:translateX(-50%) rotate(0)}44%{transform:translateX(-50%) rotate(6deg) scaleY(.94)}54%{transform:translateX(-50%) rotate(-5deg) scaleY(.95)}}\n.cam3 .cam3v7smoke{z-index:7!important;pointer-events:none}\n.scene .atmo{display:none!important}.scene canvas.noise{mix-blend-mode:normal;image-rendering:auto}\n.scene .scanlines{position:absolute;inset:0;pointer-events:none;z-index:11;opacity:0;background:repeating-linear-gradient(0deg,rgba(218,226,224,.14) 0,rgba(218,226,224,.14) 1px,transparent 1px,transparent 5px);animation:scanRoll 4.8s linear infinite}\n@keyframes scanRoll{to{background-position:0 71px}}\n\n/* M17 native-visible controls and non-illuminating atmospheric layers */\n.hth,.hth *,.hth svg,.hth button{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none;touch-action:manipulation}\n.hth .scene canvas.fog{position:absolute;inset:0;width:100%;height:100%;z-index:9;opacity:0;pointer-events:none;mix-blend-mode:normal;filter:blur(5px)}\n.hth .scene canvas.noise{z-index:10;pointer-events:none;mix-blend-mode:normal!important;image-rendering:auto!important}\n.hth .scene .scanlines{z-index:11;mix-blend-mode:normal}\n.hth .scene .light-pulse{position:absolute;inset:0;background:#03080b;z-index:12;opacity:0;pointer-events:none}\n";
 const intWord={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10}
 
@@ -55,6 +55,22 @@ const hthClientNormalizeAction=(input)=>{
 const H90_OBS=['near_door','doorway_obstruction','tool_in_lab','retract_observation'];
 const H90_REQ=['power_manual','inspect_doorway','search_lab','clear_doorway','read_west_sign'];
 const H90_OPS=['set_lighting','flicker_lights','open_lab','close_lab','open_west','close_west'];
+// High-confidence distinction between asking what Jim already has/knows and
+// authorising an ACTIVE search. Do not let a model's broad 'search_lab' label
+// bypass the player-led discovery gate. This is a narrow safety guard, not an
+// attempt to parse every colloquial search instruction deterministically.
+const hthM90AvailabilityOnly=(raw)=>{
+ const s=String(raw||'').toLowerCase().replace(/[’]/g,"'").replace(/\s+/g,' ').trim();
+ if(!s)return false;
+ // A genuine request to investigate takes precedence, even when phrased
+ // as a question: "Could you look around for anything usable?"
+ if(/\b(?:search|find|look\s+(?:around|for|through|inside|in|under|behind|over)|have\s+a\s+look|take\s+a\s+look|check|inspect|scan|hunt|see\s+if|look\s+to\s+see)\b/.test(s))return false;
+ const inquiring=/\b(?:anything|something|some ?thing|any\s+(?:tool|object|pole|stick|rod|bar)|what(?:\s+else)?|which\s+(?:tool|object))\b/.test(s);
+ if(!inquiring)return false;
+ const asking=s.includes('?')||/^(?:(?:ok|okay|hey|uh|huh|so|well)[, ]+)*(?:any(?:thing)?|what|which|is|are|have|has|do|does|can|could|would|you|u)\b/.test(s);
+ if(!asking)return false;
+ return /\b(?:use|using|push|move|shift|shove|budge|reach|have|got|see|know|work|available|nearby|around|there)\b/.test(s);
+};
 const hthM90ValidateMeaning=d=>{
  if(!d||typeof d!=='object'||!['talk','action'].includes(d.mode)||typeof d.playerText!=='string'||d.playerText.length>5000)return null;
  const m=d.meaning;if(!m||!Array.isArray(m.observations)||!Array.isArray(m.requests))return null;
@@ -67,6 +83,11 @@ const hthM90ValidateMeaning=d=>{
   if(!d.facility||!H90_OPS.includes(d.facility.op))return null;
   if(['set_lighting','flicker_lights'].includes(d.facility.op)&&(!Number.isInteger(d.facility.value)||d.facility.value<0||d.facility.value>100))return null;
  }else if(d.facility)return null;
+ if(d.mode==='talk'&&m.requests.includes('search_lab')&&hthM90AvailabilityOnly(d.playerText)){
+  // Preserve the spoken question and consume its ONE regular conversation
+  // turn, but no search, new pole knowledge, or autonomous clearance.
+  return {...d,meaning:{...m,requests:m.requests.filter(x=>x!=='search_lab')}};
+ }
  return d;
 };
 const hthM90Facility=d=>d.facility.op==='set_lighting'?['lighting',d.facility.value]:d.facility.op==='flicker_lights'?['flicker',d.facility.value]:({open_lab:['openLab'],close_lab:['closeLab'],open_west:['openWest'],close_west:['closeWest']})[d.facility.op];
