@@ -1,6 +1,6 @@
 /* HAPPY TO HELP Enhanced M17: external pinned static visual renderer. No narrative or engine data hosted here. */
 (function(){'use strict';
-const RUNTIME_VERSION='HTH_M89_FULL_NATIVE_COMPACT_v1';
+const RUNTIME_VERSION='HTH_M89_FULL_NATIVE_COMPACT_v2';
 const CSS=".hth,.hth *{box-sizing:border-box}.hth{font:12px system-ui;color:#d8e7e5;background:#0d1416;border:1px solid #49615f;border-radius:8px;padding:9px;max-width:100%}.tabs{display:flex;gap:5px;flex-wrap:wrap}.tabs button{background:#121d20;border:1px solid #546c69;color:#d8e7e5;border-radius:4px;padding:7px 9px;cursor:pointer}.tabs button[aria-selected=true]{background:#37685e;color:white;border-color:#73b5a6}.view{display:none;margin-top:7px}.view.on{display:block}.scene{position:relative;width:100%;overflow:hidden;background:#060909}.cam1 .scene{aspect-ratio:2/1}.cam2 .scene{aspect-ratio:16/9}.cam3 .scene{aspect-ratio:1672/941}.scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.scene img.off{display:none}.scene img.jim{width:auto;right:auto;bottom:auto;transform:translateX(-50%);object-fit:contain;pointer-events:none}.cam1 img.jim{height:28%;top:45%;left:71%}.cam2 img.jim{height:38%;top:44%;left:24%}.scene svg.over,.scene svg.light,.scene .atmo,.scene canvas.noise{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.scene svg.over{z-index:2}.cam3 img.overlay{z-index:3;pointer-events:none}.scene svg.smoke{z-index:4}.scene svg.light{z-index:8}.scene .atmo{z-index:9;opacity:0}.scene canvas.noise{z-index:10;opacity:0;animation:grain .23s steps(4,end) infinite}.noSignal{position:absolute;inset:0;z-index:15;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#05090a;color:#e9f6f4;font:700 clamp(14px,3vw,35px) ui-monospace,monospace;letter-spacing:.16em}.noSignal.on{display:flex}.noSignal span{font:11px ui-monospace;color:#729188;letter-spacing:.08em}.atmo span{position:absolute;display:block;border-radius:50%;width:32%;height:60%;background:radial-gradient(ellipse,rgba(196,210,211,.66),rgba(144,169,170,.40) 40%,transparent 74%);filter:blur(7px);animation:cloud 11s ease-in-out infinite}.atmo span:nth-child(1){left:12%;top:42%;animation-delay:-4s}.atmo span:nth-child(2){left:39%;top:26%;animation-delay:-8s;animation-duration:14s}.atmo span:nth-child(3){left:70%;top:48%;animation-delay:-2s;animation-duration:13s}.hit{pointer-events:all;cursor:pointer}.hit:focus-visible{stroke:#ffd871;stroke-width:2}.mainflash{animation:blink 1.2s steps(2,end) infinite}.smokepuff{opacity:0;transform-box:fill-box;transform-origin:center;animation:puff 6.8s ease-out infinite}.smokepuff.b{animation-delay:-2.2s;animation-duration:7.7s}.smokepuff.c{animation-delay:-4.5s;animation-duration:7.2s}.scene img.jim.wave{animation:wave 1.6s ease-in-out infinite}.scene img.jim.jump{animation:jump 1.5s ease-out infinite}@keyframes grain{0%{transform:translate(0)}25%{transform:translate(-1.5%,0)}50%{transform:translate(1%,-.5%)}75%{transform:translate(-.6%,1%)}}@keyframes cloud{0%{transform:translate(-10%,35%) scale(.72);opacity:0}28%{opacity:.8}65%{opacity:.72}100%{transform:translate(12%,-48%) scale(1.6);opacity:0}}@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}@keyframes puff{0%{opacity:0;transform:translate(2px,16px) scale(.65)}24%{opacity:.6}55%{opacity:.43}100%{opacity:0;transform:translate(20px,-235px) scale(2.25)}}@keyframes wave{50%{transform:translateX(-50%) rotate(-7deg)}}@keyframes jump{0%,100%{transform:translateX(-50%) translateY(0)}45%{transform:translateX(-50%) translateY(calc(-1 * var(--hth-jump-rise,12%)))}}\n.cam3 .cam3v7overlay{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}.cam3 .cam3v7smoke{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}\n\n/* M16 approved-reference poses and atmospheric fidelity */\n.cam1 img.jim,.cam2 img.jim{transform-origin:center bottom}\n.scene img.jim.cough{animation:coughShake 1.55s ease-in-out infinite}\n@keyframes coughShake{0%,30%,70%,100%{transform:translateX(-50%) rotate(0)}44%{transform:translateX(-50%) rotate(6deg) scaleY(.94)}54%{transform:translateX(-50%) rotate(-5deg) scaleY(.95)}}\n.cam3 .cam3v7smoke{z-index:7!important;pointer-events:none}\n.scene .atmo{display:none!important}.scene canvas.noise{mix-blend-mode:normal;image-rendering:auto}\n.scene .scanlines{position:absolute;inset:0;pointer-events:none;z-index:11;opacity:0;background:repeating-linear-gradient(0deg,rgba(218,226,224,.14) 0,rgba(218,226,224,.14) 1px,transparent 1px,transparent 5px);animation:scanRoll 4.8s linear infinite}\n@keyframes scanRoll{to{background-position:0 71px}}\n\n/* M17 native-visible controls and non-illuminating atmospheric layers */\n.hth,.hth *,.hth svg,.hth button{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none;touch-action:manipulation}\n.hth .scene canvas.fog{position:absolute;inset:0;width:100%;height:100%;z-index:9;opacity:0;pointer-events:none;mix-blend-mode:normal;filter:blur(5px)}\n.hth .scene canvas.noise{z-index:10;pointer-events:none;mix-blend-mode:normal!important;image-rendering:auto!important}\n.hth .scene .scanlines{z-index:11;mix-blend-mode:normal}\n.hth .scene .light-pulse{position:absolute;inset:0;background:#03080b;z-index:12;opacity:0;pointer-events:none}\n";
 const intWord={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10}
 
@@ -77,13 +77,14 @@ const hthM89Interpret=(raw,p)=>{
 const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer) {
  const C={labCam:5,exitCam:5,lights:8,labDoor:45,exitDoor:45,extraction:35,inertGas:12};
  const n=JSON.parse(JSON.stringify(prior));
+ n.knownMilestones=hthM84CanonicalMilestones(n.knownMilestones);
  const e=[];
  const fail=(reason)=>({ok:false,error:reason});
  const txt=String(raw||'').trim(), low=txt.toLowerCase().replace(/\s+/g,' ');
  const action=route==='action'?normalizer(txt):null;
  if(n.terminal)return fail('Emergency is already over.');
  if(!Number.isInteger(selection.rev)||selection.rev!==n.rev)return fail('Stale console revision. Nothing changed.');
- if(route==='action'&&(!action||!['lighting','flicker','openLab','closeLab','openWest','closeWest'].includes(action[0])))return fail('Use the on-screen release confirmation for final choices. Nothing changed.');
+ if(route==='action'&&(!action||!['lighting','flicker','openLab','closeLab','openWest','closeWest'].includes(action[0])))return fail(action&&['confirmedReleaseJim','unconfirmedReleaseJim','holdJim'].includes(action[0])?'Use the on-screen release confirmation for final choices. Nothing changed.':'Unrecognised or unauthorised facility ACTION. Nothing changed.');
  const keys=Object.keys(C), switches=selection.selectedCircuits;
  if(!switches||keys.some(k=>typeof switches[k]!=='boolean')||Object.keys(switches).length!==keys.length)return fail('Invalid breaker selection.');
  const load=keys.reduce((v,k)=>v+(switches[k]?C[k]:0),0);
@@ -266,6 +267,10 @@ const H84_GROUPS={
  farewell:['asked','spoken','deliveryDue'],finalChoice:['offered','pending','answered','used','held']
 };
 const H84_MILESTONES=['cartCleared','cartIdentified','labDoorClosed','labDoorJam','labDoorOpen','playerCart','poleFound'];
+const hthM84CanonicalMilestones=(items)=>{
+ if(!Array.isArray(items))throw Error('Invalid saved milestone list');
+ return [...new Set(items.map(x=>{const name=Number.isInteger(x)?H84_MILESTONES[x]:x;if(!H84_MILESTONES.includes(name))throw Error('Invalid saved milestone '+String(x));return name}))];
+};
 const H84_SWITCHES=['labCam','exitCam','lights','labDoor','exitDoor','extraction','inertGas'];
 const H84_A={
  rev:'r',worldSeq:'s',turns:'t',hazard:'h',boost:'b',cap:'ca',trips:'tr',door:'d',westExit:'w',lighting:'l',phase:'ph',cart:'ct',terminal:'end',rescued:'ok',
@@ -316,17 +321,16 @@ function hthM84MakeDraft(panel,d){
   else return {mode,entry:d.entry||'',route:'',payload:'',error:'',armed:false,hold:false};
  }
  if(!command||panel.terminal)return {mode,entry:d.entry||'',route,payload:'',error:'',armed:!!d.armed,hold:!!d.hold};
- if(route==='action'){
-  const err=hthLocalActionError(command);
-  if(err)return {mode,entry:d.entry||'',route,payload:'',error:err,armed:false,hold:false};
- }
  const selection={rev:panel.rev,generatorBoosted:panel.boost,selectedCircuits:panel.pending,selectedLoad:Object.keys(HTH_M76_COSTS).reduce((n,k)=>n+(panel.pending?.[k]?HTH_M76_COSTS[k]:0),0)};
- const t=hthM78Step(panel,selection,route,command,hthClientNormalizeAction);
- if(!t.ok)return {mode,entry:d.entry||'',route,payload:'',error:t.error,armed:!!d.armed,hold:!!d.hold};
- const compact=hthM84Wire(panel,t);
- const payload=compact+'\n'+(route==='talk'?'T:':route==='action'?'A:':route==='choice'?'H:':'C:')+command;
-
- return {mode,entry:d.entry||'',route,payload,error:'',armed:!!d.armed,hold:!!d.hold};
+ try{
+  const t=hthM78Step(panel,selection,route,command,hthClientNormalizeAction);
+  if(!t.ok)return {mode,entry:d.entry||'',route,payload:'',error:route==='action'?(hthLocalActionError(command)||t.error):t.error,armed:!!d.armed,hold:!!d.hold};
+  const compact=hthM84Wire(panel,t);
+  const payload=compact+'\n'+(route==='talk'?'T:':route==='action'?'A:':route==='choice'?'H:':'C:')+command;
+  return {mode,entry:d.entry||'',route,payload,error:'',armed:!!d.armed,hold:!!d.hold};
+ }catch(err){
+  return {mode,entry:d.entry||'',route,payload:'',error:'Console state error: '+(err?.message||String(err))+'. Nothing changed.',armed:!!d.armed,hold:!!d.hold};
+ }
 }
 
 function mount(root){if(!root||root.dataset.ready)return;root.dataset.ready='1';root.addEventListener('selectstart',e=>e.preventDefault());root.addEventListener('dblclick',e=>e.preventDefault());
