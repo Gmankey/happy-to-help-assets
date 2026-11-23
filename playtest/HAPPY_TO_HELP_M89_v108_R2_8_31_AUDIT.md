@@ -38,3 +38,18 @@ NOT YET CERTIFIED: language-model generalisation, live full-ten-stage unscripted
 playtest/HAPPY_TO_HELP_M89_v108_COMPLETE_10_STAGE_CHATGPT_PLAYTEST.md
 playtest/HAPPY_TO_HELP_M89_v108_R2_8_31_CONTRACT_ADDENDUM.md
 m89-full-game/renderer_engine_compact_v8.js
+## Final pinned-source and full-master integration regression — 12 additional checks PASS
+Verified after the v8 one-time manual guard correction, against pinned source SHA `7bd153ba433850aec3a72d55041b05cd37888ddf` and latest full master.
+1. v8 `resolveIntent` export exists and is callable.
+2. Full-game template pins exact v8 runtime and no v7 loader remains.
+3. Full-game contract and audit point at the corrected source pin.
+4. Integrated master retains end-of-file integration sentinel.
+5. Broad Talk keyword parser/old Jim clause regex absent.
+6. One-time manual guard `meaning.flags.manualRequest&&!n.manualSeen` present.
+7. Same-turn semantic interpretation does not demand a separate remote language-model call.
+8. First qualifying manual request produces the earned manual event.
+9. A second manual request does NOT reissue the once-only event.
+10. Native ACTION still submits `H84`.
+11. Native Talk submits `H85I` without locally reducing physics.
+12. Stale H85I revision fails without a world tick.
+**Total deterministic checks directly executed for v108:** 35 initial + 12 final integration = **47 PASS**. They do not constitute a measured semantic-classification accuracy score or live user-end-to-end completion.
