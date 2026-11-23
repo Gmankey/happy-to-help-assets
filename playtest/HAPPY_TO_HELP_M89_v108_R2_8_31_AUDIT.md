@@ -1,8 +1,8 @@
 # HAPPY TO HELP — M89 v108 / R2.8.31 AUDIT
 Date: 24 November 2026
 Git branch: m89-v108-intent-gate
-Runtime v8 source pin: 1448a9f75f66212297dd598921a60ca570590eb9
-Integrated ten-stage master commit: 32d3033a0fdb93a46b75af0425aa6aef57b35545
+Runtime v8 source pin: 7bd153ba433850aec3a72d55041b05cd37888ddf
+Integrated ten-stage master candidate: m89-v108-intent-gate branch, final pinned source updated after one-time manual regression check
 
 ## Why this change was needed
 The user's late rescue produced a false positive: 'I WILL come back' about the AI was read as 'Jim, come back'; the resulting unintended leftward movement cost critical turns. v107 regex source showed direct failures on corrections, qualifications and context. A real test checked 17 sentences against both starting directions: only 12/17 passed. Fixing one keyword did not solve the larger meaning-detection problem.
