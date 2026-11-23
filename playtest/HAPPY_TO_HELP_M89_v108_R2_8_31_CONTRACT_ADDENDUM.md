@@ -30,7 +30,7 @@ Jim navigation/disorientation: commands meaningfully directed at Jim; action phy
 Four-turn grace on qualifying Hold stays available even after opening West Exit; the fifth ordinary unprotected turn at hazard26 can reach hazard27 and be fatal. No extra death immunity.
 
 ## Binding implementation
-Runtime: Gmankey/happy-to-help-assets/m89-full-game/renderer_engine_compact_v8.js pinned at commit 1448a9f75f66212297dd598921a60ca570590eb9
+Runtime: Gmankey/happy-to-help-assets/m89-full-game/renderer_engine_compact_v8.js pinned at commit 7bd153ba433850aec3a72d55041b05cd37888ddf
 Full ten-stage candidate: playtest/HAPPY_TO_HELP_M89_v108_COMPLETE_10_STAGE_CHATGPT_PLAYTEST.md
 Regression audit: playtest/HAPPY_TO_HELP_M89_v108_R2_8_31_AUDIT.md
 Status: future-run candidate, deterministic code-tested; not claimed to have passed live unscripted end-to-end human playtesting.
