@@ -201,7 +201,7 @@ const hthM78Step=function hthM78Step(prior, selection, route, raw, normalizer, s
   else if(nav.intent==='reverse')n.jim.travelIntent=n.jim.travelIntent==='towardLabDoor'?'towardWestExit':'towardLabDoor';
   else if(nav.intent==='continue'&&n.jim.travelIntent==='hold')n.jim.travelIntent='towardWestExit';
   if(n.jim.disoriented&&['towardWestExit','towardLabDoor','reverse'].includes(nav.intent)){n.jim.disoriented=false;push('JIM_REORIENTED');}
-  if(meaning.flags.manualRequest){n.manualSeen=true;push('PLAYER_REQUESTED_POWER_MANUAL');}
+  if(meaning.flags.manualRequest&&!n.manualSeen){n.manualSeen=true;push('PLAYER_REQUESTED_POWER_MANUAL');}
   if(meaning.flags.inspectWestSign&&n.jim.room==='corridor'&&n.jim.x>=0.74){n.puzzle.westSignSeen=true;n.knowledge.playerInterlock=true;push('WEST_SIGN_READ');}
  }
  const lethal=route==='talk'&&checked.value.flags.lethalWish;
