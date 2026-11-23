@@ -63,7 +63,7 @@ for(const light of [0,34,35,64,65,75,85,86,90,100]){
   const p=initial();p.lighting=light;
   const n=turn(p,'I see a trolley blocking the lab door');
   const canSee=light>=65&&light<=85;
-  assert.equal(n.knowledge.jimCart,canSee,'Jim's trolley sightline');
+  assert.equal(n.knowledge.jimCart,canSee,"Jim's trolley sightline");
   assert.equal(n.cart,!canSee,'Cart clearance is earned only when visually identified with pole');
   assert.equal(n.knowledge.heardDoorwayWarning,true,'A positive report remains heard even without sight');
  });
