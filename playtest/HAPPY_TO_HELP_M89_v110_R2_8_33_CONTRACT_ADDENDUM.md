@@ -1,0 +1,22 @@
+# HAPPY TO HELP — BINDING CONTRACT ADDENDUM R2.8.33
+Date: 24 November 2026
+Original authoritative contract examined: HAPPY_TO_HELP_CONTRACT_R2_8_29.txt, 259,537 bytes, original Library user source. This addendum supplements R2.8.29, R2.8.30 (smoke-grace), R2.8.31 (model semantic Talk), R2.8.32 (lethal-grace and exit choice restoration). It does not silently supersede the original unrelated narrative or visual rules.
+
+## R2.8.33 A-41 mandatory adaptive farewell timing
+Original R2.8.29 test A-41 requires Jim's farewell request to track PROJECTED remaining accepted turns rather than an unqualified hazard threshold. The former hardcoded 'hazard >=22' worked only for ordinary +1 smoke with no earned Hold grace or powered extraction, and could become too early/late when those conditions change.
+For eligible progressive smoke while Jim remains alive in the facility, after each accepted ordinary turn calculate projected remaining time-bearing turns from current post-turn hazard and currently committed extraction rate: ceil(max(0,27-hazard)/(extraction?0.5:1)) plus unused one-time Hold grace. At <=5 projected living turns, if never asked, Jim requests the family farewell. The 5-turn horizon is derived from the pre-existing ordinary smoke case: hazard 22 to fatal hazard 27. His whole individual-addressed farewell must occur on the NEXT living accepted time-bearing turn independent of whether the input was Talk or ACTION. Neither requesting nor delivering is a free additional turn. If gas/smoke kills Jim before a living delivery turn, do not invent a posthumous message. An already rescued Jim does not request a death farewell.
+This rule supersedes the prior FIXED numerical hazard 22–24 request timing only when extraction/grace changes actual projected remaining turns, and retains the original hazard22 trigger in the ordinary unprotected +1 smoke course. F-015 positive/hoping family-address tone is unchanged. No extra breath time, smoke protection, health restoration, or special 'farewell turn' added.
+
+## R2.8.32 repairs restated as mandatory contract rules
+G-011: An unequivocal current wish/command for Jim to die cancels ALL unused Hold smoke grace on that same turn and applies the previously approved x3 smoke-damage multiplier (subject to extraction). Nonlethal Talk/ACTION still consumes one protected grace point while preserving normal smoke; inert gas continues counting despite grace.
+G-002/G-003: The initial earned final gate shows Open Door / Keep Closed ONLY. Open Door locally arms zero-time second stage with exactly 'Confirm open doors?' and No (left) / Yes (right). No locally returns to initial buttons with no world turn; Yes is the ONLY input that sends the final CONFIRM RELEASE JIM receipt, revalidated against all motor/interlock/rescue conditions. A single initial 'Yes — Open' button is FORBIDDEN. First-stage Keep Closed remains an irreversible world-choice record but zero time; player may later reoffer the same two-stage gate by submitting a new ordinary ACTION.
+G-010B: West Exit motor may open remotely at any Jim location when Lab Door sealed; Jim is rescued only by actual outbound crossing. G-010B explicitly supersedes G-010's old 'Jim physically in range' condition. Latest player-approved R2.8.30 supersedes G-010C's old force-clear grace on confirmed distant remote release, preserving unused earned four-turn grace.
+
+## Binding implementation
+Complete integrated 10-stage candidate: playtest/HAPPY_TO_HELP_M89_v110_COMPLETE_10_STAGE_CHATGPT_PLAYTEST.md.
+Immutable native deterministic runtime: m89-full-game/renderer_engine_compact_v10.js at Git commit eaf83deb8042ae7c9e8b2f01f6977cb4212a5713.
+Contract audit: playtest/HAPPY_TO_HELP_M89_v110_FULL_CONTRACT_AUDIT.md.
+Earlier versions v108/v109 remain immutable and retain their documented defects; only v110 adopts these repairs.
+
+## Acceptance
+Source/deterministic checks are necessary but not sufficient. The R2.8.29 original contract explicitly requires receiving-client observations of Jim's audible too-dark/too-bright responses, his coherent family speech, correct character thoughts, native two-step UI, three-camera display, first-paint control responsiveness and coherent full multi-stage endings. Until such a run is completed, source QA must not be called a full release acceptance. The complete 10-stage game remains a CANDIDATE, not release approved.
